@@ -82,3 +82,4 @@ Changes appear on the website within about a minute.
 - Payments are verified with Razorpay's signature before an order is marked paid.
 - For extra reliability you can later add a Razorpay webhook (`payment.captured`) that marks orders paid even if the customer closes the window before returning.
 - Have the policy pages reviewed by your lawyer or CA before going live.
+
