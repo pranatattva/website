@@ -2,6 +2,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { getBrowserClient } from "@/lib/supabase/browser";
 import { slugify } from "@/lib/format";
+import { compressImage } from "@/lib/compress-image";
 
 /*
   Generic list + editor for one Supabase table.
@@ -10,6 +11,7 @@ import { slugify } from "@/lib/format";
   columns: [{ key, label, render(row) }]
 */
 export default function ResourceManager({
+  refreshKey = 0,
   table,
   title,
   singular,
@@ -45,7 +47,7 @@ export default function ResourceManager({
     setLoading(false);
   }, [sb, table, orderBy.column, orderBy.ascending]);
 
-  useEffect(() => { load(); }, [load]);
+  useEffect(() => { load(); }, [load, refreshKey]);
   useEffect(() => {
     if (!toast) return;
     const t = setTimeout(() => setToast(""), 2400);
@@ -128,8 +130,10 @@ export default function ResourceManager({
     setRows((rs) => rs.map((r) => (r.id === row.id ? { ...r, [toggleKey]: !r[toggleKey] } : r)));
   }
 
-  async function upload(field, file) {
-    if (!file) return;
+  async function upload(field, original) {
+    if (!original) return;
+    setToast("Preparing image…");
+    const file = await compressImage(original);
     const path = `${table}/${Date.now()}-${slugify(file.name.replace(/\.[^.]+$/, ""))}.${file.name.split(".").pop()}`;
     setToast("Uploading image…");
     const { error } = await sb.storage.from("media").upload(path, file, { cacheControl: "31536000", upsert: false });
@@ -182,7 +186,7 @@ export default function ResourceManager({
             <tbody>
               {shown.map((r) => (
                 <tr key={r.id}>
-                  {columns.map((c) => <td key={c.key} data-label={c.label}>{c.render ? c.render(r) : r[c.key] ?? ""}</td>)}
+                  {columns.map((c) => <td key={c.key} data-label={c.label} className={c.className}>{c.render ? c.render(r) : r[c.key] ?? ""}</td>)}
                   {toggleKey && (
                     <td data-label="Visible">
                       <button type="button" className={`switch ${r[toggleKey] ? "is-on" : ""}`} role="switch" aria-checked={!!r[toggleKey]} onClick={() => toggle(r)}>

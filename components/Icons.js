@@ -43,3 +43,24 @@ export const AlignGlyph = () => (
     <path d="M12 24h6M30 24h6" strokeLinecap="round" />
   </svg>
 );
+
+// Line icons used inside gold-ringed medallions
+const ic = { fill: "none", stroke: "currentColor", strokeWidth: 1.5, strokeLinecap: "round", strokeLinejoin: "round", viewBox: "0 0 32 32", "aria-hidden": true };
+export const IcHands = () => (<svg {...ic}><path d="M9 21V12a2 2 0 0 1 4 0v5M13 17V9a2 2 0 0 1 4 0v8M17 15v-4a2 2 0 0 1 4 0v8a8 8 0 0 1-8 8h-1a7 7 0 0 1-6-3.5L4 20a2 2 0 0 1 3.4-2L9 21" /><path d="M24 5v3M28 9h-3M21 4l1 2" /></svg>);
+export const IcBook = () => (<svg {...ic}><path d="M16 9c-3-2-7-2.5-11-2v17c4-.5 8 0 11 2 3-2 7-2.5 11-2V7c-4-.5-8 0-11 2z" /><path d="M16 9v17" /></svg>);
+export const IcDrop = () => (<svg {...ic}><path d="M16 4s8 9 8 15a8 8 0 0 1-16 0c0-6 8-15 8-15z" /><path d="M12.5 20a3.5 3.5 0 0 0 3.5 3.5" /></svg>);
+export const IcMind = () => (<svg {...ic}><circle cx="16" cy="16" r="11" /><path d="M10 17c2 2.5 4 3.5 6 3.5s4-1 6-3.5M11.5 12.5h.01M20.5 12.5h.01" /></svg>);
+export const IcSun = () => (<svg {...ic}><circle cx="16" cy="16" r="5" /><path d="M16 3v3M16 26v3M3 16h3M26 16h3M6.8 6.8l2.1 2.1M23.1 23.1l2.1 2.1M6.8 25.2l2.1-2.1M23.1 8.9l2.1-2.1" /></svg>);
+export const IcMoon = () => (<svg {...ic}><path d="M24 20.5A10 10 0 0 1 11.5 8a10 10 0 1 0 12.5 12.5z" /><path d="M22 6l.8 1.8L24.5 8.5l-1.7.7L22 11l-.8-1.8-1.7-.7 1.7-.7z" /></svg>);
+export const IcHeart = () => (<svg {...ic}><path d="M16 27S4 20 4 12a6 6 0 0 1 12-1 6 6 0 0 1 12 1c0 8-12 15-12 15z" /></svg>);
+export const IcLeaf = () => (<svg {...ic}><path d="M6 26C6 13 14 6 27 5c-1 13-8 21-21 21z" /><path d="M6 26C11 19 15 15 21 11" /></svg>);
+export const IcHome = () => (<svg {...ic}><path d="M5 15L16 6l11 9" /><path d="M8 13v13h16V13" /><path d="M14 26v-6h4v6" /></svg>);
+export const IcLink = () => (<svg {...ic}><circle cx="12" cy="16" r="7" /><circle cx="20" cy="16" r="7" /></svg>);
+export const IcSpark = () => (<svg {...ic}><path d="M16 4l2.4 7.6L26 14l-7.6 2.4L16 24l-2.4-7.6L6 14l7.6-2.4z" /></svg>);
+export const IcEye = () => (<svg {...ic}><path d="M3 16s5-8 13-8 13 8 13 8-5 8-13 8S3 16 3 16z" /><circle cx="16" cy="16" r="3.5" /></svg>);
+export const IcBroom = () => (<svg {...ic}><path d="M20 4l-6 12" /><path d="M9 16h10l2 12H7z" /><path d="M11 22v6M15 22v6" /></svg>);
+export const IcStar = () => (<svg {...ic}><path d="M16 5l3 7 7 .6-5.4 4.6 1.7 7.3L16 20.6 9.7 24.5l1.7-7.3L6 12.6l7-.6z" /></svg>);
+
+export function Medal({ children, size = "" }) {
+  return <span className={`medal ${size}`}>{children}</span>;
+}

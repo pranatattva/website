@@ -123,7 +123,7 @@ export default function Header() {
               <Bag />
               {count > 0 && <span className="cart-count">{count}</span>}
             </Link>
-            <Link href="/shop/services" className="btn btn--sm">
+            <Link href="/shop#healings" className="btn btn--sm">
               Book a session
             </Link>
             <button type="button" className="icon-btn menu-toggle" aria-label="Open menu" aria-expanded={drawer} onClick={() => setDrawer(true)}>
@@ -183,7 +183,7 @@ export default function Header() {
           </ul>
         </nav>
         <div className="drawer-foot">
-          <Link href="/shop/services" className="btn btn--block">Book a session</Link>
+          <Link href="/shop#healings" className="btn btn--block">Book a session</Link>
           <p>{site.address.line1}, {site.address.line2}</p>
           <div className="socials">
             <a href={site.instagramHref} target="_blank" rel="noopener noreferrer" aria-label="Instagram"><Instagram /></a>

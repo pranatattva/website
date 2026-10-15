@@ -206,8 +206,29 @@ create policy "admin update media" on storage.objects for update using (bucket_i
 drop policy if exists "admin delete media" on storage.objects;
 create policy "admin delete media" on storage.objects for delete using (bucket_id = 'media' and public.is_admin());
 
--- ---------- Make yourself an admin ----------
--- 1. Supabase > Authentication > Users > Add user (email + password).
--- 2. Then run, with that email:
---    insert into public.admins (user_id)
---    select id from auth.users where email = 'info@pranatattva.com';
+-- ---------- Gallery ----------
+create table if not exists public.gallery (
+  id uuid primary key default gen_random_uuid(),
+  image_url text not null,
+  caption text,
+  album text,
+  taken_on date,
+  sort_order integer default 0,
+  is_published boolean not null default true,
+  created_at timestamptz not null default now()
+);
+
+alter table public.gallery enable row level security;
+
+drop policy if exists "public read gallery" on public.gallery;
+create policy "public read gallery" on public.gallery
+  for select using (is_published or public.is_admin());
+
+drop policy if exists "admin write gallery" on public.gallery;
+create policy "admin write gallery" on public.gallery
+  for all using (public.is_admin()) with check (public.is_admin());
+
+-- ---------- Admin access ----------
+-- Create a user in Supabase > Authentication > Users with the SAME email as
+-- adminEmail in site.config.js. The website grants that user admin access
+-- automatically the first time they sign in at /admin.

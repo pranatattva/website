@@ -2,7 +2,10 @@ import Link from "next/link";
 import { dateParts, formatINR, formatRange, formatDate } from "@/lib/format";
 import { Clock, Pin, User, Wave } from "@/components/Icons";
 
-export default function ScheduleList({ items, showKind = false, emptyText }) {
+export default function ScheduleList({ items, showKind = false, emptyText, past = false }) {
+  if (!items.length && past) {
+    return <div className="empty"><p style={{ margin: 0 }}>{emptyText}</p></div>;
+  }
   if (!items.length) {
     return (
       <div className="empty">
@@ -20,7 +23,7 @@ export default function ScheduleList({ items, showKind = false, emptyText }) {
         const when = it.start_date ? formatRange(it.start_date, it.end_date) : formatDate(it.event_date, { weekday: "long" });
         const enquire = `/contact?subject=${encodeURIComponent(it.title + " (" + formatDate(start) + ")")}`;
         return (
-          <li key={it.id} className="schedule-item">
+          <li key={it.id} className={`schedule-item ${past ? "is-past" : ""}`}>
             <div className="date-badge" aria-hidden="true">
               <span className="d">{day}</span>
               <span className="m">{month}</span>
@@ -37,6 +40,9 @@ export default function ScheduleList({ items, showKind = false, emptyText }) {
                 {it.level && <li><Wave />{it.level}</li>}
               </ul>
             </div>
+            {past ? (
+              <div className="schedule-cta"><span className="past-tag">Completed</span></div>
+            ) : (
             <div className="schedule-cta">
               <span className={`price ${!it.fee ? "price--free" : ""}`}>{formatINR(it.fee)}</span>
               {it.registration_url ? (
@@ -45,6 +51,7 @@ export default function ScheduleList({ items, showKind = false, emptyText }) {
                 <Link href={enquire} className="btn btn--sm btn--ghost">Enquire</Link>
               )}
             </div>
+            )}
           </li>
         );
       })}

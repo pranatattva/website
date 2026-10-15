@@ -20,7 +20,7 @@ export default function CartView() {
         <LogoMark size={96} animated />
         <h3>Thank you, your order is confirmed</h3>
         <p>We'll send dispatch details to your email and phone within two working days.</p>
-        <Link href="/shop/products" className="btn">Continue shopping</Link>
+        <Link href="/shop#products" className="btn">Continue shopping</Link>
       </div>
     );
   }
@@ -31,8 +31,8 @@ export default function CartView() {
         <h3>Your cart is empty</h3>
         <p>Browse our cleansing oils and salts, or book a healing session.</p>
         <div className="btn-row" style={{ justifyContent: "center" }}>
-          <Link href="/shop/products" className="btn">Shop products</Link>
-          <Link href="/shop/services" className="btn btn--ghost">Book a session</Link>
+          <Link href="/shop#products" className="btn">Shop products</Link>
+          <Link href="/shop#healings" className="btn btn--ghost">Book a session</Link>
         </div>
       </div>
     );

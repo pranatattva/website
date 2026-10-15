@@ -1,11 +1,17 @@
 import Link from "next/link";
 import LogoMark from "@/components/LogoMark";
+import Decor, { Mandala } from "@/components/Decor";
+import StatBand from "@/components/StatBand";
 import ScheduleList from "@/components/ScheduleList";
+import GalleryGrid from "@/components/GalleryGrid";
 import { Portrait } from "@/components/Art";
-import { GoldRule, HealGlyph, TransformGlyph, AlignGlyph } from "@/components/Icons";
-import { getPosts, getServices, getUpcoming } from "@/lib/data";
-import { formatDate, formatINR } from "@/lib/format";
-import { healers, site } from "@/lib/site";
+import {
+  GoldRule, Medal, Tick, HealGlyph, TransformGlyph, AlignGlyph,
+  IcHands, IcBook, IcDrop, IcMind, IcSun, IcMoon, IcHeart, IcLeaf, IcHome, IcEye, IcBroom, IcSpark,
+} from "@/components/Icons";
+import { getGallery, getPosts, getUpcoming } from "@/lib/data";
+import { formatDate } from "@/lib/format";
+import { centreStats, centreStatsNote, healers, site, testimonials } from "@/lib/site";
 
 export const revalidate = 60;
 
@@ -20,126 +26,157 @@ const MOTES = [
   { l: "92%", s: 6, t: 19, d: 7, x: "-22px" },
 ];
 
+const OFFERS = [
+  {
+    icon: <IcHands />,
+    title: "Healings",
+    text: "One-to-one sessions in person at Baner or by distance, for body, mind and circumstance.",
+    points: ["Physical discomfort and low energy", "Stress, anxiety and emotional heaviness", "Relationship and workplace tension", "Free discovery call to begin"],
+    href: "/shop#healings",
+    cta: "Book a healing",
+  },
+  {
+    icon: <IcBook />,
+    title: "Classes and meditation",
+    text: "Learn to heal yourself and your family, and sit with us in meditation.",
+    points: ["Basic Pranic Healing course", "Advanced courses and Pranic Psychotherapy", "Full moon Twin Hearts meditation", "Free healing camps and intro talks"],
+    href: "/schedule",
+    cta: "See the schedule",
+  },
+  {
+    icon: <IcDrop />,
+    title: "Wellness products",
+    text: "The oils and salts we use at the centre, for keeping your home and aura clear.",
+    points: ["Essential oils and cleansing blends", "Sea salt and bath salts", "Salt water bath kits", "Delivered across India"],
+    href: "/shop#products",
+    cta: "Shop oils and salts",
+  },
+];
+
+const CONCERNS = [
+  { icon: <IcMind />, title: "Stress and anxiety", text: "A racing mind that won't slow down" },
+  { icon: <IcSun />, title: "Low energy", text: "Feeling drained before the day is done" },
+  { icon: <IcMoon />, title: "Restless sleep", text: "Tired nights and heavy mornings" },
+  { icon: <IcHeart />, title: "Emotional heaviness", text: "Grief, anger or hurt that lingers" },
+  { icon: <IcLeaf />, title: "Physical discomfort", text: "Gentle support alongside medical care" },
+  { icon: <IcHome />, title: "Heavy spaces", text: "Homes and workplaces that feel stuck" },
+];
+
 export default async function HomePage() {
-  const [upcoming, services, posts] = await Promise.all([getUpcoming(4), getServices(), getPosts({ limit: 3 })]);
-  const featured = services.filter((s) => s.category !== "demo").slice(0, 3);
-  const demo = services.find((s) => s.category === "demo");
+  const [upcoming, posts, photos] = await Promise.all([getUpcoming(4), getPosts({ limit: 3 }), getGallery({ limit: 6 })]);
 
   return (
     <>
-      {/* Hero: the living logo */}
+      {/* 1. Hero: the living logo */}
       <section className="hero">
+        <Decor preset="hero" />
         <div className="motes" aria-hidden="true">
           {MOTES.map((m, i) => (
             <span key={i} className="mote" style={{ left: m.l, "--s": `${m.s}px`, "--t": `${m.t}s`, "--d": `${m.d}s`, "--x": m.x }} />
           ))}
         </div>
-        <div className="wrap">
+        <div className="wrap" style={{ position: "relative", zIndex: 1 }}>
           <div className="hero-mark">
             <LogoMark animated size={400} title="Pranatattva logo" />
           </div>
           <h1 className="hero-name">Pranatattva</h1>
           <p className="hero-tagline">✨ Heal • Transform • Align ✨</p>
           <p className="hero-copy">
-            Gentle, no-touch Pranic Healing in Baner, Pune. Come for a session, learn to heal yourself and your family, or simply sit with us in meditation.
+            Your body already knows how to heal itself. Pranic Healing gently supports it, with no touch and no medicines, at our centre in Baner, Pune or wherever you are.
           </p>
           <div className="btn-row">
-            <Link href="/shop/services" className="btn">Book a healing session</Link>
-            <Link href="/schedule/classes" className="btn btn--ghost">See upcoming classes</Link>
+            <Link href="/shop#healings" className="btn">Book a healing session</Link>
+            <Link href="/schedule" className="btn btn--ghost">Join a class or meditation</Link>
           </div>
         </div>
       </section>
 
-      {/* Three intentions */}
+      {/* 2. Facts and figures */}
+      <div className="wrap" style={{ position: "relative", zIndex: 2 }}>
+        <StatBand stats={centreStats} note={centreStatsNote} overlap />
+      </div>
+
+      {/* 3. What is Pranic Healing */}
       <section className="section">
-        <div className="wrap">
-          <div className="intentions">
-            <div className="intention">
-              <HealGlyph />
-              <h3>Heal</h3>
-              <p>Release physical discomfort, stress and emotional heaviness by cleansing and energising the body's own energy field.</p>
-            </div>
-            <div className="intention">
-              <TransformGlyph />
-              <h3>Transform</h3>
-              <p>Learn simple, practical techniques you can use every day, at home and at work, for yourself and the people you love.</p>
-            </div>
-            <div className="intention">
-              <AlignGlyph />
-              <h3>Align</h3>
-              <p>Come back into balance through meditation, energy hygiene and a calmer, clearer relationship with your inner self.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* What happens in a session */}
-      <section className="section section--lavender">
+        <Decor preset="a" />
         <div className="wrap split">
           <div>
             <GoldRule />
-            <h2>What happens in a session</h2>
+            <h2>An ancient science, made practical</h2>
             <p className="lede">
-              You stay fully clothed and relaxed. Your healer works on the energy field around your body, without touch, without medicines.
+              Prana is the life energy that keeps the body alive. Pranic Healing works on the energy field around and within your body, cleansing what is heavy and replenishing what is depleted, so your body's own healing can do its work.
             </p>
-            <ol className="steps" style={{ marginTop: 28 }}>
-              <li><div><h3>Scanning</h3><p>Your healer feels your energy field to find where it is congested or depleted.</p></div></li>
-              <li><div><h3>Cleansing</h3><p>Used-up, heavy energy is gently swept away.</p></div></li>
-              <li><div><h3>Energising</h3><p>Fresh prana is projected where it's needed, then stabilised so it lasts.</p></div></li>
-            </ol>
-            <p style={{ marginTop: 28 }}>
-              <Link href="/about/pranic-healing" className="text-link">Learn more about Pranic Healing</Link>
+            <p className="muted">
+              Grand Master Choa Kok Sui organised this ancient wisdom into a clear, step-by-step system that anyone can experience, and anyone can learn.
             </p>
+            <div className="btn-row" style={{ marginTop: 24 }}>
+              <Link href="/about/pranic-healing" className="btn btn--ghost">How Pranic Healing works</Link>
+            </div>
           </div>
-          <div className="aura-panel">
-            <LogoMark size={260} />
-            <blockquote>
-              Prana is life energy. When it flows freely, the body remembers how to heal itself.
-              <cite>The idea at the heart of Pranic Healing</cite>
-            </blockquote>
-            {demo && (
-              <div style={{ marginTop: 28, position: "relative" }}>
-                <p className="muted" style={{ marginBottom: 12 }}>Not sure where to start? Talk to us first and we'll suggest the right path.</p>
-                <Link href="/shop/services" className="btn btn--gold btn--sm">Book a {demo.name.toLowerCase()}</Link>
-              </div>
-            )}
+          <div className="flow-steps" style={{ gridTemplateColumns: "1fr" }}>
+            <div className="flow-step card"><Medal size="medal--sm"><IcEye /></Medal><h3>Scan</h3><p>Your healer feels your energy field to find where it is congested or depleted.</p></div>
+            <div className="flow-step card"><Medal size="medal--sm"><IcBroom /></Medal><h3>Cleanse</h3><p>Used-up, heavy energy is gently swept away.</p></div>
+            <div className="flow-step card"><Medal size="medal--sm"><IcSpark /></Medal><h3>Energise</h3><p>Fresh prana is projected where it's needed, then stabilised so the benefit lasts.</p></div>
           </div>
         </div>
       </section>
 
-      {/* Services */}
-      <section className="section">
+      {/* 4. What we offer */}
+      <section className="section section--lavender">
+        <Decor preset="b" />
         <div className="wrap">
-          <div className="section-head">
+          <div className="section-head center" style={{ justifyContent: "center", textAlign: "center" }}>
             <div>
-              <h2>Healing services</h2>
-              <p>One-to-one sessions in person at Baner, or by distance wherever you are.</p>
+              <GoldRule />
+              <h2>Three ways to begin with us</h2>
+              <p style={{ margin: "8px auto 0" }}>Whether you want healing, want to learn, or simply want a calmer home.</p>
             </div>
-            <Link href="/shop/services" className="btn btn--ghost btn--sm">All services and packages</Link>
           </div>
-          <div className="svc-list">
-            {featured.map((s) => (
-              <div key={s.id} className={`svc ${s.category === "package" ? "svc--package" : ""}`}>
-                <h3>{s.name}</h3>
-                <div className="dur">{s.duration}</div>
-                <p>{s.description}</p>
-                <div className="svc-foot">
-                  <span className="price">{formatINR(s.price)}</span>
-                  <Link href="/shop/services" className="btn btn--sm">Book</Link>
-                </div>
-              </div>
+          <div className="offer-grid">
+            {OFFERS.map((o) => (
+              <article key={o.title} className="offer card">
+                <Medal>{o.icon}</Medal>
+                <h3>{o.title}</h3>
+                <p>{o.text}</p>
+                <ul className="ticks">{o.points.map((p) => <li key={p}><Tick />{p}</li>)}</ul>
+                <Link href={o.href} className="text-link">{o.cta}</Link>
+              </article>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Schedule */}
-      <section className="section section--deep">
+      {/* 5. What it helps with */}
+      <section className="section">
+        <Decor preset="c" />
         <div className="wrap">
           <div className="section-head">
             <div>
-              <h2>Coming up at the centre</h2>
-              <p>Courses, free healing camps and full moon meditations.</p>
+              <h2>If any of this sounds familiar</h2>
+              <p>People come to us carrying all kinds of weight. These are some of the most common.</p>
+            </div>
+            <Link href="/shop#healings" className="btn btn--sm">Book a free discovery call</Link>
+          </div>
+          <div className="concerns">
+            {CONCERNS.map((c) => (
+              <div key={c.title} className="concern card">
+                <Medal size="medal--sm">{c.icon}</Medal>
+                <div><h3>{c.title}</h3><p>{c.text}</p></div>
+              </div>
+            ))}
+          </div>
+          <p className="small muted" style={{ marginTop: 20 }}>Pranic Healing complements medical care and never replaces it.</p>
+        </div>
+      </section>
+
+      {/* 6. Upcoming */}
+      <section className="section section--deep">
+        <Decor preset="d" />
+        <div className="wrap">
+          <div className="section-head">
+            <div>
+              <h2>Come and join us</h2>
+              <p>Courses, free healing camps and full moon meditations at the centre.</p>
             </div>
             <Link href="/schedule" className="btn btn--ghost btn--sm">Full schedule</Link>
           </div>
@@ -147,22 +184,26 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Healers */}
+      {/* 7. Healers */}
       <section className="section">
+        <Decor preset="a" />
         <div className="wrap">
           <div className="section-head">
             <div>
-              <h2>Your healers</h2>
-              <p>Pranatattva is led by Pragati and Santosh Pullewar, certified Pranic Healers and instructors.</p>
+              <GoldRule />
+              <h2>The people behind Pranatattva</h2>
+              <p>Two Associate Certified Pranic Healers, one warm, down-to-earth space.</p>
             </div>
+            <Link href="/about" className="btn btn--ghost btn--sm">Our story</Link>
           </div>
           <div className="healers">
             {healers.map((h) => (
               <Link key={h.slug} href={`/about/${h.slug}`} className="healer-card">
-                <Portrait initials={h.initials} />
+                <Portrait initials={h.initials} src={h.photo} alt={h.name} />
                 <div>
+                  <p className="hf-role" style={{ margin: 0 }}>{h.role}</p>
                   <h3>{h.name}</h3>
-                  <p className="role">{h.role}</p>
+                  <p className="role">{h.shortProfile}</p>
                   <ul className="stats">
                     {h.stats.map((s) => (
                       <li key={s.label} className="stat"><strong>{s.value}</strong><span>{s.label}</span></li>
@@ -175,9 +216,61 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Blog */}
+      {/* 8. Testimonials, shown once real ones are added in lib/site.js */}
+      {testimonials.length > 0 && (
+        <section className="section section--lavender">
+          <Decor preset="b" />
+          <div className="wrap">
+            <div className="section-head"><div><h2>What people say afterwards</h2></div></div>
+            <div className="quotes">
+              {testimonials.map((t, i) => (
+                <figure key={i} className="quote-card card" style={{ margin: 0 }}>
+                  <p>“{t.quote}”</p>
+                  <footer><strong>{t.name}</strong>{t.detail ? `, ${t.detail}` : ""}</footer>
+                </figure>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* 9. Free meditation invitation */}
+      <section className="section" style={{ paddingTop: testimonials.length ? undefined : 0 }}>
+        <div className="wrap">
+          <div className="calm-band">
+            <Mandala className="orn" />
+            <h2>Sit with us under the full moon</h2>
+            <p>
+              Every full moon we gather for the Meditation on Twin Hearts, a guided meditation for peace and loving-kindness. It's free, open to everyone, and the simplest way to feel what this work does before committing to anything.
+            </p>
+            <div className="btn-row" style={{ marginTop: 26 }}>
+              <Link href="/schedule#events" className="btn btn--gold">See the next date</Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Moments: latest gallery photos (appears once photos are added) */}
+      {photos.length > 0 && (
+        <section className="section">
+          <Decor preset="a" />
+          <div className="wrap">
+            <div className="section-head">
+              <div>
+                <h2>Moments from the centre</h2>
+                <p>Healing camps, classes and meditations.</p>
+              </div>
+              <Link href="/gallery" className="btn btn--ghost btn--sm">View the gallery</Link>
+            </div>
+            <GalleryGrid photos={photos} showFilters={false} />
+          </div>
+        </section>
+      )}
+
+      {/* 10. Journal */}
       {posts.length > 0 && (
         <section className="section section--lavender">
+          <Decor preset="c" />
           <div className="wrap">
             <div className="section-head">
               <div>
@@ -204,7 +297,7 @@ export default async function HomePage() {
         </section>
       )}
 
-      {/* Visit */}
+      {/* 11. Visit */}
       <section className="section">
         <div className="wrap">
           <div className="visit">

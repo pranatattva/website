@@ -29,8 +29,9 @@ export default function Footer() {
             <ul>
               <li><Link href="/about">About us</Link></li>
               <li><Link href="/about/pranic-healing">Pranic Healing</Link></li>
-              <li><Link href="/schedule/classes">Classes</Link></li>
-              <li><Link href="/schedule/events">Events</Link></li>
+              <li><Link href="/schedule#classes">Classes</Link></li>
+              <li><Link href="/schedule#events">Events</Link></li>
+              <li><Link href="/gallery">Gallery</Link></li>
               <li><Link href="/blog">Blog</Link></li>
             </ul>
           </div>
@@ -38,8 +39,8 @@ export default function Footer() {
           <div>
             <h2>Shop</h2>
             <ul>
-              <li><Link href="/shop/services">Book a healing</Link></li>
-              <li><Link href="/shop/products">Oils and salts</Link></li>
+              <li><Link href="/shop#healings">Book a healing</Link></li>
+              <li><Link href="/shop#products">Oils and salts</Link></li>
               <li><Link href="/cart">Your cart</Link></li>
             </ul>
           </div>
@@ -55,7 +56,8 @@ export default function Footer() {
             </address>
             <ul style={{ marginTop: 12 }}>
               <li><a href={site.mapsHref} target="_blank" rel="noopener noreferrer">Open in Google Maps</a></li>
-              <li><a href={site.phoneHref}>{site.phoneDisplay}</a></li>
+              <li><a href={site.phoneHref}>Call {site.phoneDisplay}</a></li>
+              <li><a href={site.whatsappHref} target="_blank" rel="noopener noreferrer">WhatsApp {site.whatsappDisplay}</a></li>
               <li><a href={`mailto:${site.email}`}>{site.email}</a></li>
             </ul>
           </div>

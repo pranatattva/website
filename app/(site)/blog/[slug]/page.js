@@ -34,7 +34,7 @@ export default async function PostPage({ params }) {
           {post.cover_url && <img src={post.cover_url} alt="" style={{ borderRadius: 24, marginBottom: 36, width: "100%" }} />}
           <RichText text={post.content || ""} />
           <div className="note" style={{ marginTop: 40 }}>
-            <p>Pranic Healing complements medical care and does not replace it. Questions about your own situation? <Link href="/shop/services">Book a free discovery call.</Link></p>
+            <p>Pranic Healing complements medical care and does not replace it. Questions about your own situation? <Link href="/shop#healings">Book a free discovery call.</Link></p>
           </div>
           {more.length > 0 && (
             <div style={{ marginTop: 56 }}>

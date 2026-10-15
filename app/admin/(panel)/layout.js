@@ -4,6 +4,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import LogoMark from "@/components/LogoMark";
 import { getBrowserClient } from "@/lib/supabase/browser";
+import config from "@/site.config";
 
 const NAV = [
   { href: "/admin", label: "Overview" },
@@ -12,6 +13,7 @@ const NAV = [
   { href: "/admin/bookings", label: "Bookings" },
   { href: "/admin/orders", label: "Orders" },
   { href: "/admin/messages", label: "Messages" },
+  { href: "/admin/gallery", label: "Gallery" },
   { href: "/admin/services", label: "Services" },
   { href: "/admin/products", label: "Products" },
   { href: "/admin/blog", label: "Blog" },
@@ -30,7 +32,14 @@ export default function PanelLayout({ children }) {
       const { data: { user } } = await sb.auth.getUser();
       if (!user) return router.replace("/admin/login");
       setEmail(user.email);
-      const { data: ok } = await sb.rpc("is_admin");
+      if ((user.email || "").toLowerCase() !== String(config.adminEmail).toLowerCase()) return setState("wrong-email");
+      let { data: ok } = await sb.rpc("is_admin");
+      if (!ok) {
+        // First sign-in with the admin email: grant access automatically
+        const { data: { session } } = await sb.auth.getSession();
+        await fetch("/api/admin/ensure", { method: "POST", headers: { Authorization: `Bearer ${session?.access_token}` } });
+        ({ data: ok } = await sb.rpc("is_admin"));
+      }
       setState(ok ? "ok" : "forbidden");
     })();
   }, [sb, router]);
@@ -53,12 +62,23 @@ export default function PanelLayout({ children }) {
     );
   }
   if (state === "checking") return <div className="adm-login"><p className="muted">Checking your access…</p></div>;
+  if (state === "wrong-email") {
+    return (
+      <div className="adm-login">
+        <div className="form-card prose">
+          <h1 style={{ fontSize: "1.8rem" }}>Only the admin email can sign in</h1>
+          <p>You're signed in as <strong>{email}</strong>, but the admin email in <code>site.config.js</code> is <strong>{config.adminEmail}</strong>.</p>
+          <button type="button" className="btn btn--ghost" onClick={signOut}>Sign out</button>
+        </div>
+      </div>
+    );
+  }
   if (state === "forbidden") {
     return (
       <div className="adm-login">
         <div className="form-card prose">
           <h1 style={{ fontSize: "1.8rem" }}>This account isn't an admin yet</h1>
-          <p>You're signed in as <strong>{email}</strong>. Add this account to the <code>admins</code> table in Supabase (see the last lines of <code>schema.sql</code>), then reload.</p>
+          <p>You're signed in as <strong>{email}</strong>, but access couldn't be granted. Check that <code>SUPABASE_SERVICE_ROLE_KEY</code> is set in Vercel and that <code>schema.sql</code> has been run, then reload this page.</p>
           <button type="button" className="btn btn--ghost" onClick={signOut}>Sign out</button>
         </div>
       </div>

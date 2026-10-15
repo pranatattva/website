@@ -1,25 +1,27 @@
 import PageHero from "@/components/PageHero";
-import ScheduleList from "@/components/ScheduleList";
-import { scheduleNav } from "@/components/scheduleNav";
-import { getUpcoming } from "@/lib/data";
+import Decor from "@/components/Decor";
+import ScheduleTabs from "@/components/ScheduleTabs";
+import { getClasses, getEvents, getPastClasses, getPastEvents } from "@/lib/data";
 
 export const revalidate = 60;
-export const metadata = { title: "Schedule", description: "Upcoming Pranic Healing classes, healing camps and meditations at Pranatattva, Baner, Pune." };
+export const metadata = {
+  title: "Schedule: classes and events",
+  description: "Upcoming Pranic Healing classes, free healing camps and full moon meditations at Pranatattva, Baner, Pune.",
+};
 
 export default async function SchedulePage() {
-  const items = await getUpcoming(50);
+  const [classes, events, pastClasses, pastEvents] = await Promise.all([getClasses(), getEvents(), getPastClasses(), getPastEvents()]);
   return (
     <>
       <PageHero
         title="Schedule"
-        lede="Everything happening at the centre, in date order. Classes need registration; most events are free and open to all."
+        lede="Classes to learn Pranic Healing, and events to experience it. Classes need registration; most events are free and open to all."
         crumbs={[{ label: "Schedule" }]}
-        subnav={scheduleNav}
-        active="/schedule"
       />
-      <section className="section">
+      <section className="section" style={{ paddingTop: 36 }}>
+        <Decor preset="b" />
         <div className="wrap">
-          <ScheduleList items={items} showKind />
+          <ScheduleTabs upcoming={{ classes, events }} past={{ classes: pastClasses, events: pastEvents }} />
         </div>
       </section>
     </>

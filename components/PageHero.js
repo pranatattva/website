@@ -1,12 +1,10 @@
 import Link from "next/link";
-import LogoMark from "@/components/LogoMark";
+import Decor from "@/components/Decor";
 
 export default function PageHero({ title, lede, crumbs = [], subnav, active, children }) {
   return (
     <section className="page-hero">
-      <div className="page-hero-mark" aria-hidden="true">
-        <LogoMark size={460} title="" />
-      </div>
+      <Decor preset="page" />
       <div className="wrap">
         {crumbs.length > 0 && (
           <ol className="crumbs" aria-label="Breadcrumb">

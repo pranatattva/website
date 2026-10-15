@@ -61,8 +61,8 @@ export default function PranicHealingPage() {
             </p>
           </div>
           <div className="btn-row" style={{ marginTop: 32 }}>
-            <Link href="/shop/services" className="btn">Book a session</Link>
-            <Link href="/schedule/classes" className="btn btn--ghost">Find a class</Link>
+            <Link href="/shop#healings" className="btn">Book a session</Link>
+            <Link href="/schedule#classes" className="btn btn--ghost">Find a class</Link>
           </div>
         </div>
       </section>

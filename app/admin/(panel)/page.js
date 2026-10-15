@@ -17,7 +17,8 @@ export default function Overview() {
       count(sb.from("bookings").select("id", { count: "exact", head: true }).in("status", ["pending", "confirmed"])),
       count(sb.from("orders").select("id", { count: "exact", head: true }).eq("kind", "product").eq("status", "paid")),
       count(sb.from("messages").select("id", { count: "exact", head: true }).eq("is_read", false)),
-    ]).then(([classes, events, bookings, orders, messages]) => setC({ classes, events, bookings, orders, messages }));
+      count(sb.from("gallery").select("id", { count: "exact", head: true })),
+    ]).then(([classes, events, bookings, orders, messages, gallery]) => setC({ classes, events, bookings, orders, messages, gallery }));
   }, [sb]);
 
   const cards = [
@@ -26,6 +27,7 @@ export default function Overview() {
     { label: "Bookings to schedule", value: c?.bookings, href: "/admin/bookings", action: "View bookings" },
     { label: "Orders to ship", value: c?.orders, href: "/admin/orders", action: "View orders" },
     { label: "Unread messages", value: c?.messages, href: "/admin/messages", action: "Read messages" },
+    { label: "Gallery photos", value: c?.gallery, href: "/admin/gallery", action: "Add photos" },
   ];
 
   return (

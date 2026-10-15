@@ -23,6 +23,7 @@ export default function ContactPage({ searchParams }) {
                 </div>
               </li>
               <li><span className="ic"><Phone /></span><div><h3>Phone</h3><a href={site.phoneHref}>{site.phoneDisplay}</a></div></li>
+              <li><span className="ic"><WhatsApp /></span><div><h3>WhatsApp</h3><a href={site.whatsappHref} target="_blank" rel="noopener noreferrer">{site.whatsappDisplay}</a></div></li>
               <li><span className="ic"><Mail /></span><div><h3>Email</h3><a href={`mailto:${site.email}`}>{site.email}</a></div></li>
               <li><span className="ic"><Instagram /></span><div><h3>Instagram</h3><a href={site.instagramHref} target="_blank" rel="noopener noreferrer">{site.instagramHandle}</a></div></li>
               <li>
