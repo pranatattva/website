@@ -24,7 +24,7 @@ const config = {
 
   // The ONLY email allowed into the admin dashboard (/admin).
   // This email must also exist as a user in Supabase > Authentication > Users.
-  adminEmail: "info@pranatattva.com",
+  adminEmail: "pranatattvaph@gmail.com",
 };
 
 export default config;
