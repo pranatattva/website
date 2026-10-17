@@ -273,33 +273,6 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Journal */}
-      {posts.length > 0 && (
-        <section className="section section--lavender">
-          <Decor preset="c" />
-          <div className="wrap">
-            <div className="section-head">
-              <div><h2>From the journal</h2><p>Notes on healing, meditation and everyday energy hygiene.</p></div>
-              <Link href="/blog" className="btn btn--ghost btn--sm">Read the blog</Link>
-            </div>
-            <div className="posts">
-              {posts.map((p) => (
-                <Link key={p.id} href={`/blog/${p.slug}`} className="post-card">
-                  <div className="post-cover">
-                    {p.cover_url ? <img src={p.cover_url} alt="" /> : <><LogoMark size={200} title="" /><span className="cover-word">{p.category}</span></>}
-                  </div>
-                  <div className="post-body">
-                    <h3>{p.title}</h3>
-                    <p>{p.excerpt}</p>
-                    <span className="post-date">{formatDate(p.published_at)}</span>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
-
       {/* Visit */}
       <section className="section">
         <div className="wrap">
