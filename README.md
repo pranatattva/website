@@ -10,8 +10,9 @@ The site works immediately with built-in sample content. Connect Supabase to man
 | --- | --- |
 | Home with the animated logo | `app/(site)/page.js`, `components/LogoMark.js` |
 | About (Master Choa Kok Sui, Pranic Healing, Pragati, Santosh) | `app/(site)/about/…` |
-| Schedule (classes on top, events below, Upcoming / Past tabs) | `app/(site)/schedule/page.js` |
-| Shop (healing services on top, products below) | `app/(site)/shop/page.js`, `app/(site)/cart` |
+| Courses (what you learn in each course + upcoming batches) | `app/(site)/courses/page.js`, `lib/courses.js` |
+| Schedule (courses on top, events below, Upcoming / Past tabs) | `app/(site)/schedule/page.js` |
+| Services & Store (healing types, packages, products) | `app/(site)/shop/page.js`, `app/(site)/cart` |
 | Blog | `app/(site)/blog/…` |
 | Contact (form + map) | `app/(site)/contact` |
 | Policies (footer only) | `app/(site)/policies/…` |
@@ -31,6 +32,12 @@ Other content lives in **`lib/site.js`**:
 - `testimonials` — add real client quotes and a "What people say" section appears on the home page
 
 Sample prices for services and products live in `lib/sample-data.js` (and in the database once connected, where you edit them from the dashboard).
+
+## Updating an existing site
+
+When an update includes a file in `supabase/` named `update-…sql`, run it once in Supabase > SQL Editor before uploading the new code. The latest is `supabase/update-oct-2026.sql`.
+
+Changes made in the admin dashboard go live within a few seconds and never need a redeploy. Only code changes (including `site.config.js`) go through GitHub and Vercel.
 
 ## 2. Set up Supabase (free tier is fine)
 

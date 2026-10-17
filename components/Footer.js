@@ -1,9 +1,9 @@
 import Link from "next/link";
 import LogoMark from "@/components/LogoMark";
 import { site } from "@/lib/site";
-import { Instagram, WhatsApp, Mail } from "@/components/Icons";
+import { Instagram, WhatsApp, Mail, Phone } from "@/components/Icons";
 
-export default function Footer() {
+export default function Footer({ hasProducts = true }) {
   const year = new Date().getFullYear();
   return (
     <footer className="site-footer">
@@ -11,68 +11,56 @@ export default function Footer() {
         <div className="footer-grid">
           <div className="footer-brand">
             <Link href="/" className="brand" aria-label="Pranatattva home">
-              <LogoMark size={46} />
+              <LogoMark size={38} />
               <span className="brand-name">Pranatattva</span>
             </Link>
-            <p style={{ marginTop: 14 }}>
-              A Pranic Healing centre in Baner, Pune. Healing sessions, classes, meditations and free healing camps.
-            </p>
+            <p>Pranic Healing centre in Baner, Pune.</p>
             <div className="socials">
               <a href={site.instagramHref} target="_blank" rel="noopener noreferrer" aria-label="Instagram"><Instagram /></a>
               <a href={site.whatsappHref} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><WhatsApp /></a>
+              <a href={site.phoneHref} aria-label="Call"><Phone /></a>
               <a href={`mailto:${site.email}`} aria-label="Email"><Mail /></a>
             </div>
           </div>
 
-          <div>
+          <nav aria-label="Explore">
             <h2>Explore</h2>
             <ul>
-              <li><Link href="/about">About us</Link></li>
-              <li><Link href="/about/pranic-healing">Pranic Healing</Link></li>
-              <li><Link href="/schedule#classes">Classes</Link></li>
-              <li><Link href="/schedule#events">Events</Link></li>
+              <li><Link href="/about">About</Link></li>
+              <li><Link href="/courses">Courses</Link></li>
+              <li><Link href="/schedule">Schedule</Link></li>
               <li><Link href="/gallery">Gallery</Link></li>
               <li><Link href="/blog">Blog</Link></li>
+              <li><Link href="/contact">Contact</Link></li>
             </ul>
-          </div>
+          </nav>
 
-          <div>
-            <h2>Shop</h2>
+          <nav aria-label="Services">
+            <h2>Services</h2>
             <ul>
-              <li><Link href="/shop#healings">Book a healing</Link></li>
-              <li><Link href="/shop#products">Oils and salts</Link></li>
-              <li><Link href="/cart">Your cart</Link></li>
+              <li><Link href="/shop#healings">Healing services</Link></li>
+              {hasProducts && <li><Link href="/shop#products">Oils and salts</Link></li>}
+              {hasProducts && <li><Link href="/cart">Cart</Link></li>}
             </ul>
-          </div>
+          </nav>
 
-          <div>
+          <div className="footer-visit">
             <h2>Visit</h2>
-            <address>
-              {site.address.name}
-              <br />
-              {site.address.line1}
-              <br />
-              {site.address.line2}
-            </address>
-            <ul style={{ marginTop: 12 }}>
-              <li><a href={site.mapsHref} target="_blank" rel="noopener noreferrer">Open in Google Maps</a></li>
-              <li><a href={site.phoneHref}>Call {site.phoneDisplay}</a></li>
-              <li><a href={site.whatsappHref} target="_blank" rel="noopener noreferrer">WhatsApp {site.whatsappDisplay}</a></li>
+            <address>{site.address.line1}, {site.address.line2}</address>
+            <ul>
+              <li><a href={site.mapsHref} target="_blank" rel="noopener noreferrer">Google Maps</a></li>
+              <li><a href={site.phoneHref}>{site.phoneDisplay}</a></li>
               <li><a href={`mailto:${site.email}`}>{site.email}</a></li>
             </ul>
           </div>
         </div>
 
-        <p className="disclaimer">
-          Pranic Healing is a complementary practice and is not a substitute for medical diagnosis or treatment. Please continue to consult your doctor for any health concern.
-        </p>
-
         <div className="footer-bottom">
-          <p>© {year} Pranatattva Pranic Healing Centre</p>
+          <p>© {year} Pranatattva. Pranic Healing complements medical care and does not replace it.</p>
           <nav aria-label="Policies">
-            <Link href="/policies/privacy">Privacy policy</Link>
-            <Link href="/policies/refund">Refund policy</Link>
-            <Link href="/policies/terms">Terms and conditions</Link>
+            <Link href="/policies/privacy">Privacy</Link>
+            <Link href="/policies/refund">Refunds</Link>
+            <Link href="/policies/terms">Terms</Link>
           </nav>
         </div>
       </div>

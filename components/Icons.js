@@ -64,3 +64,17 @@ export const IcStar = () => (<svg {...ic}><path d="M16 5l3 7 7 .6-5.4 4.6 1.7 7.
 export function Medal({ children, size = "" }) {
   return <span className={`medal ${size}`}>{children}</span>;
 }
+export const IcBriefcase = () => (<svg {...ic}><rect x="4" y="10" width="24" height="16" rx="3" /><path d="M12 10V7.5A1.5 1.5 0 0 1 13.5 6h5A1.5 1.5 0 0 1 20 7.5V10M4 17h24" /></svg>);
+export const IcChart = () => (<svg {...ic}><path d="M5 26h22" /><path d="M8 22v-5M14 22v-9M20 22v-6M26 22V8" /><path d="M7 13l7-5 6 4 6-6" /></svg>);
+export const IcCell = () => (<svg {...ic}><circle cx="16" cy="16" r="11" /><circle cx="16" cy="16" r="4" /><circle cx="9.5" cy="11" r="1" /><circle cx="22" cy="10.5" r="1.2" /><circle cx="21.5" cy="21.5" r="1" /><circle cx="10" cy="21" r="1.3" /></svg>);
+export const IcTree = () => (<svg {...ic}><circle cx="16" cy="7" r="3" /><circle cx="8" cy="20" r="3" /><circle cx="24" cy="20" r="3" /><path d="M16 10v5M16 15H8v2M16 15h8v2M8 23v3M24 23v3" /></svg>);
+export const IcFace = () => (<svg {...ic}><path d="M16 4c-6 0-9 4.5-9 10.5S10.5 28 16 28s9-7.5 9-13.5S22 4 16 4z" /><path d="M12.5 14h.01M19.5 14h.01M13 20c1.8 1.6 4.2 1.6 6 0" /><path d="M24 5l.7 1.6 1.6.7-1.6.7L24 9.6l-.7-1.6-1.6-.7 1.6-.7z" /></svg>);
+export const IcFigure = () => (<svg {...ic}><circle cx="16" cy="6" r="2.6" /><path d="M11 13c3 1.2 7 1.2 10 0M16 13.6v6M16 19.6l-4 7M16 19.6l4 7" /><path d="M7 10c2 4 2 9 0 13M25 10c-2 4-2 9 0 13" strokeDasharray="1 3" /></svg>);
+export const IcCalendar = () => (<svg {...ic}><rect x="5" y="7" width="22" height="20" rx="3" /><path d="M5 13h22M11 4v5M21 4v5" /></svg>);
+export const IcQuote = () => (<svg {...ic}><path d="M6 20c0-5 2-8 6-10M18 20c0-5 2-8 6-10" /><circle cx="9" cy="21" r="3" /><circle cx="21" cy="21" r="3" /></svg>);
+
+const MAP = { leaf: IcLeaf, mind: IcMind, link: IcLink, briefcase: IcBriefcase, chart: IcChart, home: IcHome, cell: IcCell, tree: IcTree, face: IcFace, figure: IcFigure };
+export function HealIcon({ name }) {
+  const C = MAP[name] || IcSpark;
+  return <C />;
+}

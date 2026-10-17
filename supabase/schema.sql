@@ -37,6 +37,7 @@ create table if not exists public.classes (
   registration_url text,
   image_url text,
   is_published boolean not null default true,
+  is_past boolean not null default false,
   created_at timestamptz not null default now()
 );
 
@@ -52,6 +53,7 @@ create table if not exists public.events (
   registration_url text,
   image_url text,
   is_published boolean not null default true,
+  is_past boolean not null default false,
   created_at timestamptz not null default now()
 );
 
@@ -77,7 +79,7 @@ create table if not exists public.services (
   description text,
   duration text,
   sessions integer default 1,
-  price integer not null default 0,
+  price integer default 0,
   features text[] default '{}',
   is_active boolean not null default true,
   sort_order integer default 0,
@@ -91,7 +93,8 @@ create table if not exists public.products (
   category text not null default 'Oils',
   description text,
   size text,
-  price integer not null default 0,
+  price integer default 0,
+  sale_price integer,
   stock integer default 0,
   image_url text,
   is_active boolean not null default true,
@@ -227,6 +230,22 @@ create policy "public read gallery" on public.gallery
 drop policy if exists "admin write gallery" on public.gallery;
 create policy "admin write gallery" on public.gallery
   for all using (public.is_admin()) with check (public.is_admin());
+
+-- ---------- Testimonials ----------
+create table if not exists public.testimonials (
+  id uuid primary key default gen_random_uuid(),
+  image_url text not null,
+  category text,
+  name text,
+  sort_order integer default 0,
+  is_published boolean not null default true,
+  created_at timestamptz not null default now()
+);
+alter table public.testimonials enable row level security;
+drop policy if exists "public read testimonials" on public.testimonials;
+create policy "public read testimonials" on public.testimonials for select using (is_published or public.is_admin());
+drop policy if exists "admin write testimonials" on public.testimonials;
+create policy "admin write testimonials" on public.testimonials for all using (public.is_admin()) with check (public.is_admin());
 
 -- ---------- Admin access ----------
 -- Create a user in Supabase > Authentication > Users with the SAME email as

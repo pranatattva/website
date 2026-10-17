@@ -3,6 +3,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { getBrowserClient } from "@/lib/supabase/browser";
 import { slugify } from "@/lib/format";
 import { compressImage } from "@/lib/compress-image";
+import { refreshLiveSite } from "@/lib/refresh-site";
 
 /*
   Generic list + editor for one Supabase table.
@@ -12,6 +13,7 @@ import { compressImage } from "@/lib/compress-image";
 */
 export default function ResourceManager({
   refreshKey = 0,
+  filter,
   table,
   title,
   singular,
@@ -24,9 +26,11 @@ export default function ResourceManager({
   allowDelete = true,
   searchKeys = ["title"],
   toggleKey,
+  toggles,
   statusFilter,
 }) {
   const sb = getBrowserClient();
+  const toggleList = toggles || (toggleKey ? [{ key: toggleKey, label: "Visible" }] : []);
   const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -110,8 +114,9 @@ export default function ResourceManager({
       return;
     }
     closeEditor();
-    setToast(draft.id ? `${singular} updated` : `${singular} added`);
+    setToast(draft.id ? `${singular} updated. Live on the website in a few seconds.` : `${singular} added. Live on the website in a few seconds.`);
     load();
+    refreshLiveSite(sb);
   }
 
   async function remove(row) {
@@ -122,12 +127,14 @@ export default function ResourceManager({
     setToast(`${singular} deleted`);
     if (draft?.id === row.id) closeEditor();
     load();
+    refreshLiveSite(sb);
   }
 
-  async function toggle(row) {
-    const { error } = await sb.from(table).update({ [toggleKey]: !row[toggleKey] }).eq("id", row.id);
-    if (error) return setToast(error.message);
-    setRows((rs) => rs.map((r) => (r.id === row.id ? { ...r, [toggleKey]: !r[toggleKey] } : r)));
+  async function toggle(row, key) {
+    const { error } = await sb.from(table).update({ [key]: !row[key] }).eq("id", row.id);
+    if (error) return setToast(error.message.includes("is_past") ? "Please run the latest update SQL in Supabase first." : error.message);
+    setRows((rs) => rs.map((r) => (r.id === row.id ? { ...r, [key]: !r[key] } : r)));
+    refreshLiveSite(sb);
   }
 
   async function upload(field, original) {
@@ -179,7 +186,7 @@ export default function ResourceManager({
             <thead>
               <tr>
                 {columns.map((c) => <th key={c.key} scope="col">{c.label}</th>)}
-                {toggleKey && <th scope="col">Visible</th>}
+                {toggleList.map((t) => <th key={t.key} scope="col">{t.label}</th>)}
                 <th scope="col"><span className="sr-only">Actions</span></th>
               </tr>
             </thead>
@@ -187,13 +194,13 @@ export default function ResourceManager({
               {shown.map((r) => (
                 <tr key={r.id}>
                   {columns.map((c) => <td key={c.key} data-label={c.label} className={c.className}>{c.render ? c.render(r) : r[c.key] ?? ""}</td>)}
-                  {toggleKey && (
-                    <td data-label="Visible">
-                      <button type="button" className={`switch ${r[toggleKey] ? "is-on" : ""}`} role="switch" aria-checked={!!r[toggleKey]} onClick={() => toggle(r)}>
-                        <span className="sr-only">Show on website</span>
+                  {toggleList.map((t) => (
+                    <td key={t.key} data-label={t.label}>
+                      <button type="button" className={`switch ${t.tone ? `switch--${t.tone}` : ""} ${r[t.key] ? "is-on" : ""}`} role="switch" aria-checked={!!r[t.key]} onClick={() => toggle(r, t.key)}>
+                        <span className="sr-only">{t.label}</span>
                       </button>
                     </td>
-                  )}
+                  ))}
                   <td className="adm-actions">
                     <button type="button" className="btn btn--ghost btn--sm" onClick={() => openEditor(r)}>{allowCreate ? "Edit" : "Open"}</button>
                     {allowDelete && <button type="button" className="adm-del" onClick={() => remove(r)}>Delete</button>}

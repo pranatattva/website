@@ -24,10 +24,10 @@ export default function HealerProfile({ healer }) {
         <div className="wrap">
           <div className="calm-band center">
             <h2>Begin your healing journey</h2>
-            <p style={{ margin: "0 auto" }}>Start with a free discovery call, or join a class to learn Pranic Healing yourself.</p>
+            <p style={{ margin: "0 auto" }}>Start with a free discovery call, or join a course to learn Pranic Healing yourself.</p>
             <div className="btn-row" style={{ marginTop: 26, justifyContent: "center" }}>
               <Link href="/shop#healings" className="btn btn--gold">Book a session</Link>
-              <Link href="/schedule#classes" className="btn btn--ghost" style={{ color: "#fff", background: "rgba(255,255,255,.08)", boxShadow: "inset 0 0 0 1px rgba(255,255,255,.4)" }}>See upcoming classes</Link>
+              <Link href="/courses" className="btn btn--ghost" style={{ color: "#fff", background: "rgba(255,255,255,.08)", boxShadow: "inset 0 0 0 1px rgba(255,255,255,.4)" }}>See our courses</Link>
             </div>
           </div>
         </div>

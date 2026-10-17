@@ -2,7 +2,9 @@
 import { useState } from "react";
 import AddToCart from "@/components/AddToCart";
 import { ProductArt } from "@/components/Art";
-import { formatINR } from "@/lib/format";
+import { effectivePrice, formatINR } from "@/lib/format";
+import { waLink } from "@/lib/site";
+import { WhatsApp } from "@/components/Icons";
 
 export default function ProductGrid({ products }) {
   const cats = ["All", ...Array.from(new Set(products.map((p) => p.category)))];
@@ -28,10 +30,24 @@ export default function ProductGrid({ products }) {
               <p>{p.description}</p>
               <div className="product-foot">
                 <div>
-                  <span className="price">{formatINR(p.price)}</span>
+                  {p.price === null || p.price === undefined ? (
+                    <span className="price price--ask">Price on request</span>
+                  ) : effectivePrice(p) < p.price ? (
+                    <span className="price-wrap">
+                      <span className="price">{formatINR(effectivePrice(p))}</span>
+                      <s className="price-old">{formatINR(p.price)}</s>
+                      <span className="price-off">{Math.round((1 - effectivePrice(p) / p.price) * 100)}% off</span>
+                    </span>
+                  ) : (
+                    <span className="price">{formatINR(p.price)}</span>
+                  )}
                   {p.size && <span className="size">{p.size}</span>}
                 </div>
-                <AddToCart product={p} />
+                {p.price === null || p.price === undefined ? (
+                  <a className="btn btn--sm btn--wa" href={waLink(`Hi Pranatattva, I'd like to order ${p.name}.`)} target="_blank" rel="noopener noreferrer"><WhatsApp width={15} height={15} />Ask</a>
+                ) : (
+                  <AddToCart product={{ ...p, price: effectivePrice(p) }} />
+                )}
               </div>
             </div>
           </article>

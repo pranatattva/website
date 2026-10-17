@@ -12,7 +12,7 @@ export default function BookButton({ service, label, variant = "" }) {
   const ref = useRef(null);
   const [status, setStatus] = useState("idle"); // idle | busy | done
   const [error, setError] = useState("");
-  const free = !service.price;
+  const free = service.price === 0;
   const isDistance = /distance/i.test(service.name);
 
   useEffect(() => {

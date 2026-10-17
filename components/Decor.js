@@ -57,48 +57,28 @@ export function RayArc({ className = "" }) {
   );
 }
 
+// Only soft colour glows: no line art (per brief)
 const PRESETS = {
   hero: (
     <>
       <span className="orb orb--lav orb--xl" style={{ left: "-12%", top: "8%" }} />
       <span className="orb orb--blue orb--lg" style={{ right: "-8%", top: "-6%" }} />
       <span className="orb orb--gold orb--lg" style={{ right: "6%", bottom: "-18%" }} />
-      <Mandala className="orn--gold orn--hero" />
-      <Lotus className="orn--gold orn--lotus-hero" />
     </>
   ),
-  a: (
-    <>
-      <span className="orb orb--lav orb--lg" style={{ left: "-10%", bottom: "-20%" }} />
-      <Mandala className="orn--gold orn--tr" />
-    </>
-  ),
+  a: <span className="orb orb--lav orb--lg" style={{ left: "-10%", bottom: "-20%" }} />,
   b: (
     <>
       <span className="orb orb--gold orb--md" style={{ right: "-6%", top: "-10%" }} />
       <span className="orb orb--blue orb--md" style={{ left: "-8%", bottom: "-6%" }} />
-      <Lotus className="orn--violet orn--bl" />
-      <span className="dots dots--tl" />
     </>
   ),
-  c: (
-    <>
-      <span className="orb orb--blue orb--lg" style={{ left: "-12%", top: "-14%" }} />
-      <RayArc className="orn--gold orn--br" />
-    </>
-  ),
-  d: (
-    <>
-      <span className="orb orb--lav orb--lg" style={{ right: "-10%", top: "10%" }} />
-      <Mandala className="orn--violet orn--bl-big" />
-      <span className="dots dots--br" />
-    </>
-  ),
+  c: <span className="orb orb--blue orb--lg" style={{ left: "-12%", top: "-14%" }} />,
+  d: <span className="orb orb--lav orb--lg" style={{ right: "-10%", top: "10%" }} />,
   page: (
     <>
       <span className="orb orb--lav orb--lg" style={{ left: "-8%", top: "-30%" }} />
       <span className="orb orb--gold orb--md" style={{ right: "18%", bottom: "-40%" }} />
-      <Mandala className="orn--gold orn--page" />
     </>
   ),
 };

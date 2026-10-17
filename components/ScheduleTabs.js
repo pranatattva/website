@@ -23,15 +23,15 @@ export default function ScheduleTabs({ upcoming, past }) {
       </div>
 
       <div role="tabpanel">
-        <div className="block" id="classes">
+        <div className="block" id="courses">
           <div className="block-head">
             <Medal size="medal--sm"><IcBook /></Medal>
             <div>
-              <h2>{isPast ? "Past classes" : "Classes"}</h2>
-              <p>{isPast ? "Courses we've held recently." : "Certified courses following Grand Master Choa Kok Sui's curriculum. Start with Basic Pranic Healing."}</p>
+              <h2>{isPast ? "Past courses" : "Courses"}</h2>
+              <p>{isPast ? "Courses we've held recently." : "Courses following Grand Master Choa Kok Sui's curriculum. Start with Basic Pranic Healing."}</p>
             </div>
           </div>
-          <ScheduleList items={data.classes} past={isPast} emptyText={isPast ? "Past classes will appear here." : "No classes are scheduled right now."} />
+          <ScheduleList items={data.classes} past={isPast} emptyText={isPast ? "Past courses will appear here." : "No courses are scheduled right now."} />
         </div>
 
         <div className="block" id="events">

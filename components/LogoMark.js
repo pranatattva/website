@@ -32,13 +32,15 @@ export default function LogoMark({ size = 48, animated = false, className = "", 
           <stop offset="0.6" stopColor="#E8C877" stopOpacity="0.55" />
           <stop offset="1" stopColor="#E8C877" stopOpacity="0" />
         </radialGradient>
+        <clipPath id={`${id}-clip`}>
+          <circle r="117" />
+        </clipPath>
       </defs>
 
       {animated && (
         <g className="lm-ripples" aria-hidden="true">
           <circle r="150" className="lm-ripple" style={{ "--d": "0s" }} />
-          <circle r="150" className="lm-ripple" style={{ "--d": "2s" }} />
-          <circle r="150" className="lm-ripple" style={{ "--d": "4s" }} />
+          <circle r="150" className="lm-ripple" style={{ "--d": "3.5s" }} />
         </g>
       )}
 
@@ -81,6 +83,14 @@ export default function LogoMark({ size = 48, animated = false, className = "", 
         )}
       </g>
 
+      {animated && (
+        <g clipPath={`url(#${id}-clip)`} aria-hidden="true">
+          {[0, 1.6, 3.2].map((d) => (
+            <circle key={d} r="16" className="lm-water" style={{ "--d": `${d}s` }} fill="none" stroke="#E2B95A" strokeWidth="2.2" vectorEffect="non-scaling-stroke" />
+          ))}
+        </g>
+      )}
+
       <g className="lm-flower" transform="scale(0.95)">
         {[0, 90, 180, 270].map((r) => (
           <g key={r} transform={`rotate(${r})`}>
@@ -95,7 +105,7 @@ export default function LogoMark({ size = 48, animated = false, className = "", 
             </g>
           </g>
         ))}
-        <g className="lm-center">
+        <g>
           <circle r="16" fill="#6F8AE6" stroke="#E2B95A" strokeWidth="3.2" />
           <circle r="8" fill="#9CB2F2" stroke="#E2B95A" strokeWidth="2" />
         </g>
