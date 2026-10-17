@@ -20,12 +20,12 @@ export default function RefundPage() {
         <li>Unused sessions can be refunded within the validity period, minus the full single-session price for each session already used.</li>
         <li>Packages are personal and cannot be transferred without our agreement.</li>
       </ul>
-      <h2>Classes and workshops</h2>
+      <h2>Courses and workshops</h2>
       <ul>
-        <li>Cancellations made 7 or more days before the class start date receive a full refund.</li>
+        <li>Cancellations made 7 or more days before the course start date receive a full refund.</li>
         <li>Cancellations made 2 to 6 days before receive a 50% refund, or the full fee can be moved to a future batch of the same course.</li>
         <li>Cancellations within 48 hours of the start are not refundable, but the fee can be moved to a future batch once.</li>
-        <li>If we cancel a class, you'll receive a full refund or a place in the next batch.</li>
+        <li>If we cancel a course, you'll receive a full refund or a place in the next batch.</li>
       </ul>
       <h2>Products</h2>
       <ul>

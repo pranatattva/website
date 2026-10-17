@@ -8,12 +8,13 @@ import config from "@/site.config";
 
 const NAV = [
   { href: "/admin", label: "Overview" },
-  { href: "/admin/classes", label: "Classes" },
+  { href: "/admin/classes", label: "Courses" },
   { href: "/admin/events", label: "Events" },
   { href: "/admin/bookings", label: "Bookings" },
   { href: "/admin/orders", label: "Orders" },
   { href: "/admin/messages", label: "Messages" },
   { href: "/admin/gallery", label: "Gallery" },
+  { href: "/admin/testimonials", label: "Testimonials" },
   { href: "/admin/services", label: "Services" },
   { href: "/admin/products", label: "Products" },
   { href: "/admin/blog", label: "Blog" },

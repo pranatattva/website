@@ -18,7 +18,7 @@ export async function POST(req) {
   const { data: service, error: sErr } = await sb
     .from("services").select("id,name,price,is_active").eq("id", body.serviceId).maybeSingle();
   if (sErr || !service || !service.is_active) return json({ error: "This service is no longer available." }, 404);
-  if (service.price > 0) return json({ error: "This service needs payment. Please use the Book now button." }, 400);
+  if (service.price !== 0) return json({ error: "This service can't be requested for free. Please use the Book now button or message us." }, 400);
 
   const { error } = await sb.from("bookings").insert({
     ...booking, service_id: service.id, service_name: service.name, amount: 0, status: "pending",

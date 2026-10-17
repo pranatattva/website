@@ -7,7 +7,7 @@ export default function PrivacyPage() {
   return (
     <PolicyLayout title="Privacy policy" active="/policies/privacy">
       <p>
-        This policy explains how {site.fullName} ("Pranatattva", "we", "us") collects, uses and protects your personal data when you use {site.url.replace("https://", "")}, book a service, register for a class or buy a product. We process personal data in line with the Digital Personal Data Protection Act, 2023 and other applicable Indian law.
+        This policy explains how {site.fullName} ("Pranatattva", "we", "us") collects, uses and protects your personal data when you use {site.url.replace("https://", "")}, book a service, register for a course or buy a product. We process personal data in line with the Digital Personal Data Protection Act, 2023 and other applicable Indian law.
       </p>
       <h2>What we collect</h2>
       <ul>
@@ -22,7 +22,7 @@ export default function PrivacyPage() {
         <li>To schedule and deliver healing sessions, classes and events you sign up for.</li>
         <li>To process payments, deliver orders and issue receipts.</li>
         <li>To reply to your messages and send updates about your bookings.</li>
-        <li>To send occasional news about classes and events, only if you have agreed. You can opt out at any time.</li>
+        <li>To send occasional news about courses and events, only if you have agreed. You can opt out at any time.</li>
         <li>To meet legal, tax and accounting obligations.</li>
       </ul>
       <h2>Health information</h2>

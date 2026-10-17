@@ -3,6 +3,7 @@ import { useState } from "react";
 import ResourceManager from "@/components/admin/ResourceManager";
 import { getBrowserClient } from "@/lib/supabase/browser";
 import { compressImage } from "@/lib/compress-image";
+import { refreshLiveSite } from "@/lib/refresh-site";
 import { formatDate } from "@/lib/format";
 
 function BulkUpload({ onDone }) {
@@ -30,6 +31,7 @@ function BulkUpload({ onDone }) {
     }
     setBusy(done ? `${done} photo${done > 1 ? "s" : ""} added` : "");
     onDone();
+    if (done) refreshLiveSite(sb);
     setTimeout(() => setBusy(""), 3000);
   }
 
@@ -37,7 +39,7 @@ function BulkUpload({ onDone }) {
     <div className="bulk card">
       <div>
         <h2 style={{ fontSize: "1.3rem", margin: 0 }}>Add photos</h2>
-        <p className="muted small" style={{ margin: "4px 0 0" }}>Choose one or many photos at once. They're resized automatically and appear on the website within a minute. Add captions afterwards with Edit.</p>
+        <p className="muted small" style={{ margin: "4px 0 0" }}>Choose one or many photos at once. They're resized automatically and appear on the website within a few seconds. Add captions afterwards with Edit.</p>
       </div>
       <div className="bulk-row">
         <div className="field">

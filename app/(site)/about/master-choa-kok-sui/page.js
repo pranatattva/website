@@ -43,7 +43,7 @@ export default function MCKSPage() {
               </ul>
             </div>
             <div className="btn-row" style={{ marginTop: 32 }}>
-              <Link href="/schedule#classes" className="btn">Learn Pranic Healing</Link>
+              <Link href="/courses" className="btn">Learn Pranic Healing</Link>
               <Link href="/schedule#events" className="btn btn--ghost">Join a full moon meditation</Link>
             </div>
           </div>

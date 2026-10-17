@@ -57,12 +57,12 @@ export default function PranicHealingPage() {
             </p>
             <h2>Can I learn it?</h2>
             <p>
-              Absolutely. The Basic Pranic Healing course is a two-day class with no prerequisites. By the end you'll be able to give simple healings to yourself and your family.
+              Absolutely. The Basic Pranic Healing course is a two-day course with no prerequisites. By the end you'll be able to give simple healings to yourself and your family.
             </p>
           </div>
           <div className="btn-row" style={{ marginTop: 32 }}>
             <Link href="/shop#healings" className="btn">Book a session</Link>
-            <Link href="/schedule#classes" className="btn btn--ghost">Find a class</Link>
+            <Link href="/courses" className="btn btn--ghost">Find a course</Link>
           </div>
         </div>
       </section>

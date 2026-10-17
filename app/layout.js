@@ -19,7 +19,7 @@ export default function RootLayout({ children }) {
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         {/* eslint-disable-next-line @next/next/no-page-custom-font */}
         <link
-          href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600&family=Marcellus&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600&family=Lora:wght@500;600&family=Marcellus&display=swap"
           rel="stylesheet"
         />
       </head>

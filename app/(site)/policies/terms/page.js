@@ -20,7 +20,7 @@ export default function TermsPage() {
         <li>Please arrive five minutes early for in-person sessions. Late arrival may shorten your session.</li>
         <li>Minors must be accompanied by a parent or guardian, who must also give consent for the session.</li>
       </ul>
-      <h2>Classes</h2>
+      <h2>Courses</h2>
       <ul>
         <li>Course content and materials are for your personal learning and may not be recorded, copied or redistributed.</li>
         <li>We may update dates, venues or instructors if necessary and will tell you as early as possible.</li>

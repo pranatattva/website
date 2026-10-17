@@ -5,8 +5,8 @@ import { getClasses, getEvents, getPastClasses, getPastEvents } from "@/lib/data
 
 export const revalidate = 60;
 export const metadata = {
-  title: "Schedule: classes and events",
-  description: "Upcoming Pranic Healing classes, free healing camps and full moon meditations at Pranatattva, Baner, Pune.",
+  title: "Schedule: courses and events",
+  description: "Upcoming Pranic Healing courses, free healing camps and full moon meditations at Pranatattva, Baner, Pune.",
 };
 
 export default async function SchedulePage() {
@@ -15,7 +15,7 @@ export default async function SchedulePage() {
     <>
       <PageHero
         title="Schedule"
-        lede="Classes to learn Pranic Healing, and events to experience it. Classes need registration; most events are free and open to all."
+        lede="Courses to learn Pranic Healing, and events to experience it. Courses need registration; most events are free and open to all."
         crumbs={[{ label: "Schedule" }]}
       />
       <section className="section" style={{ paddingTop: 36 }}>

@@ -3,14 +3,15 @@ import Decor from "@/components/Decor";
 import BookButton from "@/components/BookButton";
 import ProductGrid from "@/components/ProductGrid";
 import JumpCapsules from "@/components/JumpCapsules";
-import { Medal, Tick, IcHands, IcDrop } from "@/components/Icons";
+import { Medal, Tick, IcHands, IcDrop, IcSpark, WhatsApp } from "@/components/Icons";
+import HealingTypes from "@/components/HealingTypes";
 import { getProducts, getServices } from "@/lib/data";
 import { formatINR } from "@/lib/format";
-import { shipping } from "@/lib/site";
+import { shipping, waLink } from "@/lib/site";
 
 export const revalidate = 60;
 export const metadata = {
-  title: "Shop: healing sessions, packages and products",
+  title: "Services & Store",
   description: "Book a free discovery call, a Pranic Healing session or a healing package, and order cleansing oils and salts from Pranatattva, Pune.",
 };
 
@@ -25,22 +26,31 @@ export default async function ShopPage() {
   return (
     <>
       <PageHero
-        title="Online shop"
-        lede="Book a healing package or session, then browse the oils and salts we use at the centre. Secure payment by UPI, card or netbanking."
-        crumbs={[{ label: "Shop" }]}
+        title="Services & Store"
+        lede="Healing for every part of life, packages and sessions you can book online, and the oils and salts we use at the centre."
+        crumbs={[{ label: "Services & Store" }]}
       />
 
       <div className="shop-flow">
-      <JumpCapsules items={[{ id: "healings", label: "Healing services" }, { id: "products", label: "Oils and salts" }]} />
+      <JumpCapsules items={[{ id: "healings", label: "Healing services" }, ...(products.length ? [{ id: "products", label: "Oils and salts" }] : [])]} />
       <section className="section" id="healings" style={{ paddingTop: 24 }}>
         <Decor preset="a" />
         <div className="wrap">
 
-          <div className="block-head">
+          <div className="block-head" id="healing-types">
+            <Medal size="medal--sm"><IcSpark /></Medal>
+            <div>
+              <h2>Healing for every part of life</h2>
+              <p>Pranic Healing can support you in many areas. Tap any type to ask us about it on WhatsApp.</p>
+            </div>
+          </div>
+          <HealingTypes />
+
+          <div className="block-head" style={{ marginTop: "clamp(48px, 6vw, 72px)" }}>
             <Medal size="medal--sm"><IcHands /></Medal>
             <div>
-              <h2>Healing services</h2>
-              <p>Choose a package or session, pick a preferred date and time, and pay securely. We'll confirm the exact slot by phone or WhatsApp.</p>
+              <h2>Packages and sessions</h2>
+              <p>Choose a package or session and pick a preferred date and time. We'll confirm the exact slot by phone or WhatsApp.</p>
             </div>
           </div>
 
@@ -61,8 +71,17 @@ export default async function ShopPage() {
                         <ul className="ticks">{s.features.map((f) => <li key={f}><Tick />{f}</li>)}</ul>
                       )}
                       <div className="svc-foot">
-                        <span className="price">{formatINR(s.price)}</span>
-                        <BookButton service={s} variant={s.category === "demo" ? "btn--gold" : ""} />
+                        {s.price === null || s.price === undefined ? (
+                          <>
+                            <span className="price price--ask">Price on request</span>
+                            <a className="btn btn--sm btn--wa" href={waLink(`Hi Pranatattva, I'd like to know more about the ${s.name}.`)} target="_blank" rel="noopener noreferrer"><WhatsApp width={16} height={16} />Message us</a>
+                          </>
+                        ) : (
+                          <>
+                            <span className="price">{formatINR(s.price)}</span>
+                            <BookButton service={s} variant={s.category === "demo" ? "btn--gold" : ""} />
+                          </>
+                        )}
                       </div>
                     </article>
                   ))}
@@ -73,6 +92,7 @@ export default async function ShopPage() {
         </div>
       </section>
 
+      {products.length > 0 && (
       <section className="section section--lavender" id="products">
         <Decor preset="b" />
         <div className="wrap">
@@ -83,13 +103,10 @@ export default async function ShopPage() {
               <p>For cleansing your home and yourself. Free delivery on orders above {formatINR(shipping.freeAbove)}.</p>
             </div>
           </div>
-          {products.length ? (
-            <ProductGrid products={products} />
-          ) : (
-            <div className="empty"><h3>New stock is on the way</h3><p>Please check back soon.</p></div>
-          )}
+          <ProductGrid products={products} />
         </div>
       </section>
+      )}
       </div>
     </>
   );

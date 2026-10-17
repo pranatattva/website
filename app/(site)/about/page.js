@@ -6,7 +6,7 @@ import HealerFeature from "@/components/HealerFeature";
 import { Portrait } from "@/components/Art";
 import { aboutNav } from "@/components/aboutNav";
 import { GoldRule, Medal, IcEye, IcBroom, IcSpark, IcLeaf, IcSun, IcBook, IcHeart, IcStar, IcHome } from "@/components/Icons";
-import { centreStats, centreStatsNote, healers } from "@/lib/site";
+import { centreStats, healers } from "@/lib/site";
 import { mcks } from "@/lib/mcks";
 
 export const metadata = {
@@ -28,7 +28,7 @@ export default function AboutPage() {
       {/* Facts and figures */}
       <section className="section" style={{ paddingBottom: 0 }}>
         <div className="wrap">
-          <StatBand stats={centreStats} note={centreStatsNote} />
+          <StatBand stats={centreStats} />
         </div>
       </section>
 

@@ -9,7 +9,7 @@ export default function ContactPage({ searchParams }) {
   const subject = typeof searchParams?.subject === "string" ? searchParams.subject.slice(0, 200) : "";
   return (
     <>
-      <PageHero title="Contact us" lede="Questions about a session, a class or an order? Write to us, call, or drop in at the centre." crumbs={[{ label: "Contact" }]} />
+      <PageHero title="Contact us" lede="Questions about a session, a course or an order? Write to us, call, or drop in at the centre." crumbs={[{ label: "Contact" }]} />
       <section className="section">
         <div className="wrap contact-grid">
           <div>

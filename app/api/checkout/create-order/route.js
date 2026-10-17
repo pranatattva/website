@@ -1,6 +1,7 @@
 import { createServiceClient } from "@/lib/supabase/server";
 import { bookingError, clean, cleanBooking, isEmail, isPhone, json } from "@/lib/validate";
 import { shipping } from "@/lib/site";
+import { effectivePrice } from "@/lib/format";
 
 const KEY_ID = process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID;
 const SECRET = process.env.RAZORPAY_KEY_SECRET;
@@ -39,7 +40,8 @@ export async function POST(req) {
       const { data: service } = await sb
         .from("services").select("id,name,price,is_active").eq("id", body.serviceId).maybeSingle();
       if (!service || !service.is_active) return json({ error: "This service is no longer available." }, 404);
-      if (!service.price) return json({ error: "This service is free. Please use the request form." }, 400);
+      if (service.price === null || service.price === undefined) return json({ error: "Please message us on WhatsApp to book this service." }, 400);
+      if (service.price === 0) return json({ error: "This service is free. Please use the request form." }, 400);
 
       const amount = service.price * 100;
       const { data: b, error: bErr } = await sb.from("bookings").insert({
@@ -77,7 +79,7 @@ export async function POST(req) {
       if (!wanted.length) return json({ error: "Your cart is empty." }, 400);
 
       const { data: products, error: pErr } = await sb
-        .from("products").select("id,name,price,size,stock,is_active").in("id", wanted.map((w) => w.id));
+        .from("products").select("id,name,price,sale_price,size,stock,is_active").in("id", wanted.map((w) => w.id));
       if (pErr) throw pErr;
 
       const lines = [];
@@ -85,7 +87,9 @@ export async function POST(req) {
         const p = products.find((x) => x.id === w.id);
         if (!p || !p.is_active) return json({ error: "An item in your cart is no longer available. Please remove it and try again." }, 409);
         if (p.stock !== null && p.stock < w.qty) return json({ error: `Only ${p.stock} of ${p.name} left in stock.` }, 409);
-        lines.push({ id: p.id, name: p.name, size: p.size, price: p.price, qty: w.qty });
+        const price = effectivePrice(p);
+        if (price === null) return json({ error: `${p.name} is available on request. Please message us on WhatsApp.` }, 409);
+        lines.push({ id: p.id, name: p.name, size: p.size, price, qty: w.qty });
       }
       const subtotal = lines.reduce((s, l) => s + l.price * l.qty, 0);
       const delivery = subtotal >= shipping.freeAbove ? 0 : shipping.flatFee;

@@ -18,12 +18,12 @@ export default function Page() {
       orderBy={{ column: "sort_order", ascending: true }}
       searchKeys={["name"]}
       toggleKey="is_active"
-      defaults={{ category: "session", is_active: true, price: 0, sessions: 1 }}
+      defaults={{ category: "session", is_active: true, sessions: 1 }}
       columns={[
         { key: "name", label: "Service", render: (r) => <strong>{r.name}</strong> },
         { key: "category", label: "Type", render: (r) => CATS.find((c) => c.value === r.category)?.label },
         { key: "duration", label: "Duration" },
-        { key: "price", label: "Price", render: (r) => formatINR(r.price) },
+        { key: "price", label: "Price", render: (r) => formatINR(r.price) || <span className="muted">On request</span> },
       ]}
       fields={[
         { name: "name", label: "Service name", type: "text", required: true, full: true },
@@ -31,7 +31,7 @@ export default function Page() {
         { name: "slug", label: "Slug", type: "slug" },
         { name: "duration", label: "Duration", type: "text", placeholder: "60 minutes or 5 sessions" },
         { name: "sessions", label: "Number of sessions", type: "number" },
-        { name: "price", label: "Price (₹)", type: "number", required: true, help: "0 makes it a free request with no payment" },
+        { name: "price", label: "Price (₹)", type: "number", help: "Leave blank to hide the price and show a Message us on WhatsApp button. 0 makes it a free request." },
         { name: "sort_order", label: "Display order", type: "number" },
         { name: "description", label: "Description", type: "textarea" },
         { name: "features", label: "Highlights", type: "list", help: "One per line" },
