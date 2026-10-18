@@ -3,48 +3,60 @@ import { useEffect, useState } from "react";
 import ScheduleList from "@/components/ScheduleList";
 import { Medal, IcBook, IcSpark } from "@/components/Icons";
 
-export default function ScheduleTabs({ upcoming, past }) {
-  const [view, setView] = useState("upcoming");
-  const data = view === "upcoming" ? upcoming : past;
-  const isPast = view === "past";
+const TABS = [
+  { id: "courses", label: "Courses", icon: <IcBook />, key: "classes", none: "No courses are scheduled right now.", nonePast: "Past courses will appear here." },
+  { id: "events", label: "Events", icon: <IcSpark />, key: "events", none: "No events are scheduled right now.", nonePast: "Past events will appear here." },
+];
 
-  // Allow links like /schedule?view=past
+export default function ScheduleTabs({ upcoming, past }) {
+  const [tab, setTab] = useState("courses");
+  const [when, setWhen] = useState({ courses: "upcoming", events: "upcoming" });
+
+  // Links like /schedule#events open the right tab
   useEffect(() => {
-    if (new URLSearchParams(window.location.search).get("view") === "past") setView("past");
+    const fromHash = () => {
+      const h = window.location.hash.replace("#", "");
+      if (TABS.some((t) => t.id === h)) setTab(h);
+    };
+    fromHash();
+    window.addEventListener("hashchange", fromHash);
+    return () => window.removeEventListener("hashchange", fromHash);
   }, []);
+
+  const choose = (id) => {
+    setTab(id);
+    history.replaceState(null, "", `#${id}`);
+  };
 
   return (
     <>
       <div className="capsule-bar">
-        <div className="capsules" role="tablist" aria-label="Show upcoming or past">
-          <button type="button" role="tab" aria-selected={view === "upcoming"} onClick={() => setView("upcoming")}>Upcoming</button>
-          <button type="button" role="tab" aria-selected={view === "past"} onClick={() => setView("past")}>Past</button>
+        <div className="capsules" role="tablist" aria-label="Courses or events">
+          {TABS.map((t) => (
+            <button key={t.id} type="button" role="tab" aria-selected={tab === t.id} aria-controls={`panel-${t.id}`} onClick={() => choose(t.id)}>{t.label}</button>
+          ))}
         </div>
       </div>
 
-      <div role="tabpanel">
-        <div className="block" id="courses">
-          <div className="block-head">
-            <Medal size="medal--sm"><IcBook /></Medal>
-            <div>
-              <h2>{isPast ? "Past courses" : "Courses"}</h2>
-              <p>{isPast ? "Courses we've held recently." : "Courses following Grand Master Choa Kok Sui's curriculum. Start with Basic Pranic Healing."}</p>
+      {TABS.map((t) => {
+        const isPast = when[t.id] === "past";
+        const items = (isPast ? past : upcoming)[t.key];
+        return (
+          <div key={t.id} id={t.id} role="tabpanel" aria-labelledby={`tab-${t.id}`} hidden={tab !== t.id} className="block">
+            <div className="block-head block-head--split">
+              <div className="block-head-title">
+                <Medal size="medal--sm">{t.icon}</Medal>
+                <h2 id={`tab-${t.id}`}>{isPast ? `Past ${t.label.toLowerCase()}` : t.label}</h2>
+              </div>
+              <div className="capsules capsules--sm" role="group" aria-label={`Upcoming or past ${t.label.toLowerCase()}`}>
+                <button type="button" aria-pressed={!isPast} onClick={() => setWhen((w) => ({ ...w, [t.id]: "upcoming" }))}>Upcoming</button>
+                <button type="button" aria-pressed={isPast} onClick={() => setWhen((w) => ({ ...w, [t.id]: "past" }))}>Past</button>
+              </div>
             </div>
+            <ScheduleList items={items} past={isPast} emptyText={isPast ? t.nonePast : t.none} />
           </div>
-          <ScheduleList items={data.classes} past={isPast} emptyText={isPast ? "Past courses will appear here." : "No courses are scheduled right now."} />
-        </div>
-
-        <div className="block" id="events">
-          <div className="block-head">
-            <Medal size="medal--sm"><IcSpark /></Medal>
-            <div>
-              <h2>{isPast ? "Past events" : "Events"}</h2>
-              <p>{isPast ? "Camps, meditations and talks we've held recently." : "Free healing camps, full moon meditations, talks and workshops. Everyone is welcome."}</p>
-            </div>
-          </div>
-          <ScheduleList items={data.events} past={isPast} emptyText={isPast ? "Past events will appear here." : "No events are scheduled right now."} />
-        </div>
-      </div>
+        );
+      })}
     </>
   );
 }

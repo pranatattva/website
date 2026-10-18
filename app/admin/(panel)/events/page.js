@@ -27,6 +27,7 @@ export default function Page() {
         { name: "fee", label: "Fee (₹)", type: "number", help: "0 shows as Free. Leave blank to hide the fee." },
         { name: "venue", label: "Venue", type: "text", full: true },
         { name: "description", label: "Description", type: "textarea" },
+        { name: "google_link", label: "Google link", type: "url", full: true, help: "Paste a Google Maps location, Google Form or Google Meet link. The website shows it as a map link, a Register button or a Join online link." },
         { name: "registration_url", label: "Registration or Zoom link", type: "url", full: true },
         { name: "image_url", label: "Image", type: "image" },
         { name: "is_published", label: "Show on website", type: "checkbox" },

@@ -1,8 +1,9 @@
 "use client";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Close } from "@/components/Icons";
+import Carousel from "@/components/Carousel";
 
-export default function GalleryGrid({ photos, showFilters = true }) {
+export default function GalleryGrid({ photos, showFilters = true, carousel = false }) {
   const albums = useMemo(() => ["All", ...Array.from(new Set(photos.map((p) => p.album).filter(Boolean)))], [photos]);
   const [album, setAlbum] = useState("All");
   const [index, setIndex] = useState(-1);
@@ -35,6 +36,18 @@ export default function GalleryGrid({ photos, showFilters = true }) {
           </div>
         </div>
       )}
+      {carousel ? (
+        <Carousel label="Gallery" className="carousel--gallery">
+          {shown.map((p, i) => (
+            <div key={p.id} className="gallery-slide">
+            <button type="button" className="gallery-item" onClick={() => open(i)} aria-label={`Open photo${p.caption ? `: ${p.caption}` : ""}`}>
+              <img src={p.image_url} alt={p.caption || "Pranatattva moment"} loading="lazy" />
+              {p.caption && <span className="gallery-cap">{p.caption}</span>}
+            </button>
+            </div>
+          ))}
+        </Carousel>
+      ) : (
       <ul className="gallery">
         {shown.map((p, i) => (
           <li key={p.id}>
@@ -45,6 +58,7 @@ export default function GalleryGrid({ photos, showFilters = true }) {
           </li>
         ))}
       </ul>
+      )}
       <dialog ref={dlg} className="lightbox" onClose={() => setIndex(-1)} onClick={(e) => e.target === dlg.current && dlg.current.close()}>
         {current && (
           <figure>

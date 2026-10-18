@@ -2,6 +2,7 @@ import { waLink } from "@/lib/site";
 import { dateParts, formatINR, formatRange, formatDate } from "@/lib/format";
 import { Clock, Pin, User, Wave, WhatsApp } from "@/components/Icons";
 import { reserveLink } from "@/components/EventCard";
+import { googleLink } from "@/lib/google-link";
 
 export default function ScheduleList({ items, showKind = false, emptyText, past = false }) {
   if (!items.length && past) {
@@ -20,6 +21,7 @@ export default function ScheduleList({ items, showKind = false, emptyText, past 
     <ul className="schedule">
       {items.map((it) => {
         const start = it.start_date || it.event_date;
+        const g = googleLink(it);
         const { day, month } = dateParts(start);
         const when = it.start_date ? formatRange(it.start_date, it.end_date) : formatDate(it.event_date, { weekday: "long" });
         return (
@@ -35,7 +37,12 @@ export default function ScheduleList({ items, showKind = false, emptyText, past 
               <ul className="meta">
                 <li><span className="sr-only">Date: </span>{when}</li>
                 {it.time_text && <li><Clock />{it.time_text}</li>}
-                {it.venue && <li><Pin />{it.venue}</li>}
+                {it.venue && (
+                  <li><Pin />{g?.type === "map" ? <a href={g.href} target="_blank" rel="noopener noreferrer" className="meta-link">{it.venue}, map</a> : it.venue}</li>
+                )}
+                {!it.venue && g?.type === "map" && <li><Pin /><a href={g.href} target="_blank" rel="noopener noreferrer" className="meta-link">View on Google Maps</a></li>}
+                {g?.type === "meet" && <li><a href={g.href} target="_blank" rel="noopener noreferrer" className="meta-link">Join on Google Meet</a></li>}
+                {g?.type === "link" && <li><a href={g.href} target="_blank" rel="noopener noreferrer" className="meta-link">More details</a></li>}
                 {it.instructor && <li><User />{it.instructor}</li>}
                 {it.level && <li><Wave />{it.level}</li>}
               </ul>
@@ -45,8 +52,8 @@ export default function ScheduleList({ items, showKind = false, emptyText, past 
             ) : (
             <div className="schedule-cta">
               {formatINR(it.fee) && <span className={`price ${formatINR(it.fee) === "Free" ? "price--free" : ""}`}>{formatINR(it.fee)}</span>}
-              {it.registration_url ? (
-                <a href={it.registration_url} className="btn btn--sm" target="_blank" rel="noopener noreferrer">Register</a>
+              {g?.type === "form" || it.registration_url ? (
+                <a href={g?.type === "form" ? g.href : it.registration_url} className="btn btn--sm" target="_blank" rel="noopener noreferrer">Register</a>
               ) : (
                 <a href={reserveLink(it)} className="btn btn--sm btn--wa" target="_blank" rel="noopener noreferrer"><WhatsApp width={16} height={16} />Reserve a seat</a>
               )}

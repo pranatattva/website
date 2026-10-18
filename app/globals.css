@@ -276,9 +276,10 @@ h4 { font-weight: 500; font-size: 1rem; }
 
 .logomark.is-animated { animation: lm-intro 1.8s cubic-bezier(.2,.7,.2,1) both; overflow: visible; }
 /* petals stay in place and swell gently, in time with each water ripple */
-.is-animated .lm-petal { animation: lm-swell 1.6s ease-in-out 1s infinite; }
+.is-animated .lm-petal { animation: lm-swell 6.6s ease-in-out 1s infinite; }
 /* water ripples: the bigger centre circle travels out to the edge of the blue disc and fades */
-.is-animated .lm-water { opacity: 0; animation: lm-water 4.8s cubic-bezier(.22,.61,.36,1) var(--d) infinite; }
+.is-animated .lm-water { opacity: 0; animation: lm-water 6.6s cubic-bezier(.25,.6,.35,1) var(--d) infinite; }
+.is-animated .lm-water--trail { animation-name: lm-water-trail; }
 .is-animated .lm-ring-spin { animation: lm-spin 120s linear infinite; }
 .is-animated .lm-inner-spin { animation: lm-spin 60s linear infinite reverse; }
 .is-animated .lm-ray { animation: lm-shimmer 7s ease-in-out infinite; animation-delay: calc(var(--i) * 0.29s); }
@@ -287,12 +288,19 @@ h4 { font-weight: 500; font-size: 1rem; }
 .is-animated .lm-ripple { fill: none; stroke: #e1bd68; stroke-width: 1; opacity: 0; animation: lm-ripple 7s ease-out var(--d) infinite; }
 
 @keyframes lm-intro { from { opacity: 0; transform: scale(.9); } to { opacity: 1; transform: none; } }
-@keyframes lm-swell { 0%, 100% { transform: scale(1); } 45% { transform: scale(1.055); } }
+@keyframes lm-swell { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.045); } }
+/* wavy water ripple: grows, gently twists and softens as it travels out */
 @keyframes lm-water {
-  0% { transform: scale(1); opacity: 0; }
+  0% { transform: scale(1) rotate(0deg); opacity: 0; }
   8% { opacity: .95; }
+  35% { transform: scale(3.4) rotate(9deg); }
   70% { opacity: .35; }
-  100% { transform: scale(7.4); opacity: 0; }
+  100% { transform: scale(7.4) rotate(22deg); opacity: 0; }
+}
+@keyframes lm-water-trail {
+  0% { transform: scale(1) rotate(0deg); opacity: 0; }
+  10% { opacity: .55; }
+  100% { transform: scale(7.2) rotate(-18deg); opacity: 0; }
 }
 @keyframes lm-spin { to { transform: rotate(360deg); } }
 @keyframes lm-shimmer { 0%, 100% { opacity: 1; } 50% { opacity: .6; } }
@@ -1312,3 +1320,74 @@ body::after {
   .footer-visit ul { display: flex; flex-wrap: wrap; gap: 4px 16px; }
   .site-footer ul { gap: 2px; }
 }
+
+/* =========================================================
+   v4
+   ========================================================= */
+/* Urbanist: the typeface of the Pranatattva wordmark */
+:root { --font-brand: "Urbanist", "Lexend", system-ui, sans-serif; }
+.brand-name { font-family: var(--font-brand); font-weight: 600; letter-spacing: 0.01em; font-size: 1.38rem; }
+
+/* Schedule: Upcoming / Past at the right of each heading */
+.block-head--split { justify-content: space-between; flex-wrap: wrap; gap: 14px 20px; }
+.block-head-title { display: flex; align-items: center; gap: 16px; }
+.block-head-title h2 { margin: 0; }
+.capsules--sm { padding: 4px; }
+.capsules--sm button { padding: 8px 16px; font-size: 0.88rem; }
+.capsules--sm [aria-pressed="true"] { color: var(--white); background: linear-gradient(135deg, #7a55bf 0%, #5e3c99 50%, #45297a 100%); box-shadow: inset 0 1px 0 rgba(255,255,255,.25), 0 8px 18px -10px rgba(78,44,140,.8); }
+.capsules--sm [aria-pressed="true"]:hover { color: var(--white); }
+[role="tabpanel"][hidden] { display: none; }
+.meta-link { color: var(--violet); text-decoration: none; border-bottom: 1px dotted currentColor; }
+.meta-link:hover { color: var(--violet-deep); }
+
+/* Home gallery as a sliding row */
+.carousel--gallery .carousel-track { grid-auto-columns: minmax(260px, 340px); }
+.gallery-slide .gallery-item { aspect-ratio: 4 / 3; }
+.gallery-slide .gallery-item img { height: 100%; object-fit: cover; }
+@media (max-width: 600px) { .carousel--gallery .carousel-track { grid-auto-columns: 78%; } }
+
+/* Full moon + Visit side by side */
+.duo { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; align-items: stretch; }
+.duo .calm-band { display: flex; flex-direction: column; justify-content: center; padding: clamp(32px, 4vw, 52px); }
+.duo .calm-band h2, .duo .visit h2 { font-size: clamp(1.6rem, 2.6vw, 2.1rem); }
+.duo .calm-band .btn-row { margin-top: 18px; }
+.duo .visit { grid-template-columns: 1fr; }
+.duo .visit-copy { padding: clamp(28px, 3.5vw, 44px) clamp(28px, 3.5vw, 44px) 22px; }
+.duo .visit address { margin-bottom: 18px; }
+.duo .visit .map-frame { min-height: 0; height: 190px; }
+@media (max-width: 900px) {
+  .duo { grid-template-columns: 1fr; gap: 16px; }
+  .duo .calm-band { padding: 26px 22px; border-radius: 26px; }
+  .duo .calm-band h2, .duo .visit h2 { font-size: 1.45rem; margin-bottom: 8px; }
+  .duo .calm-band p { font-size: 0.95rem; margin-bottom: 0; }
+  .duo .visit { border-radius: 26px; }
+  .duo .visit-copy { padding: 24px 22px 18px; }
+  .duo .visit address { font-size: 0.95rem; margin-bottom: 14px; }
+  .duo .visit .map-frame { height: 150px; }
+  .duo .btn { min-height: 44px; padding: 0 20px; font-size: 0.92rem; }
+}
+
+/* Mobile footer: back to the v2 layout, with Explore and Services side by side */
+@media (max-width: 900px) {
+  .site-footer { padding: 52px 0 24px; }
+  .footer-grid { grid-template-columns: 1fr 1fr; gap: 30px 20px; }
+  .footer-brand { grid-column: 1 / -1; display: block; }
+  .footer-brand p { display: block; font-size: 0.95rem; max-width: 34ch; margin-top: 12px; }
+  .footer-brand .socials { margin-top: 16px; gap: 8px; }
+  .footer-brand .socials a { width: 42px; height: 42px; }
+  .footer-brand .socials svg { width: 19px; height: 19px; }
+  .footer-visit { grid-column: 1 / -1; }
+  .footer-visit ul { display: grid; gap: 9px; }
+  .site-footer ul { gap: 9px; }
+  .site-footer li a, .site-footer address { font-size: 0.94rem; }
+  .footer-bottom { margin-top: 36px; padding-top: 20px; flex-direction: column; gap: 10px; }
+}
+@media (max-width: 480px) {
+  .site-footer { padding: 48px 0 22px; }
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+}
+.nav-link, .btn { white-space: nowrap; }
+.brand-name { font-size: 1.32rem; }
+.main-nav > ul { gap: 0; }
+@media (max-width: 1240px) { .main-nav, .header-actions .btn { display: none; } .menu-toggle { display: inline-grid; } }
+.block[role="tabpanel"] { scroll-margin-top: calc(var(--header-h) + 90px); }

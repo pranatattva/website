@@ -7,6 +7,19 @@ const PETAL =
 
 const RAYS = Array.from({ length: 24 }, (_, i) => i * 15);
 
+// A soft, wavy ring for the water ripple (radius 16, gentle waves)
+function wavyRing(r = 16, amp = 1.25, waves = 9, steps = 144) {
+  let d = "";
+  for (let i = 0; i <= steps; i++) {
+    const t = (i / steps) * Math.PI * 2;
+    const rr = r + amp * Math.sin(waves * t);
+    d += `${i ? "L" : "M"}${(rr * Math.cos(t)).toFixed(2)} ${(rr * Math.sin(t)).toFixed(2)}`;
+  }
+  return d + "Z";
+}
+const WAVE = wavyRing();
+const WAVE_ALT = wavyRing(16, 1.1, 11);
+
 export default function LogoMark({ size = 48, animated = false, className = "", title = "Pranatattva" }) {
   const id = animated ? "lm-a" : "lm-s";
   return (
@@ -85,8 +98,11 @@ export default function LogoMark({ size = 48, animated = false, className = "", 
 
       {animated && (
         <g clipPath={`url(#${id}-clip)`} aria-hidden="true">
-          {[0, 1.6, 3.2].map((d) => (
-            <circle key={d} r="16" className="lm-water" style={{ "--d": `${d}s` }} fill="none" stroke="#E2B95A" strokeWidth="2.2" vectorEffect="non-scaling-stroke" />
+          {[0, 2.2, 4.4].map((d) => (
+            <g key={d}>
+              <path d={WAVE} className="lm-water" style={{ "--d": `${d}s` }} fill="none" stroke="#E2B95A" strokeWidth="2.2" vectorEffect="non-scaling-stroke" />
+              <path d={WAVE_ALT} className="lm-water lm-water--trail" style={{ "--d": `${d + 0.35}s` }} fill="none" stroke="#F1D58F" strokeWidth="1.2" vectorEffect="non-scaling-stroke" />
+            </g>
           ))}
         </g>
       )}

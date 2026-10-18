@@ -14,7 +14,7 @@ export default function Footer({ hasProducts = true }) {
               <LogoMark size={38} />
               <span className="brand-name">Pranatattva</span>
             </Link>
-            <p>Pranic Healing centre in Baner, Pune.</p>
+            <p>A Pranic Healing centre in Baner, Pune. Healing sessions, courses, meditations and free healing camps.</p>
             <div className="socials">
               <a href={site.instagramHref} target="_blank" rel="noopener noreferrer" aria-label="Instagram"><Instagram /></a>
               <a href={site.whatsappHref} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><WhatsApp /></a>

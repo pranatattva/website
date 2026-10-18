@@ -8,8 +8,7 @@ import GalleryGrid from "@/components/GalleryGrid";
 import TestimonialSlider from "@/components/TestimonialSlider";
 import { Portrait } from "@/components/Art";
 import { GoldRule, Medal, Tick, HealIcon, IcHands, IcBook, IcDrop, IcEye, IcBroom, IcSpark, WhatsApp } from "@/components/Icons";
-import { getGallery, getPosts, getProducts, getTestimonials, getUpcoming } from "@/lib/data";
-import { formatDate } from "@/lib/format";
+import { getGallery, getProducts, getTestimonials, getUpcoming } from "@/lib/data";
 import { centreStats, healers, hero, masterQuote, site, testimonialPlaceholders, waLink } from "@/lib/site";
 
 export const revalidate = 60;
@@ -33,8 +32,8 @@ const CONCERNS = [
 ];
 
 export default async function HomePage() {
-  const [upcoming, posts, photos, testimonials, products] = await Promise.all([
-    getUpcoming(10), getPosts({ limit: 3 }), getGallery({ limit: 6 }), getTestimonials(), getProducts(),
+  const [upcoming, photos, testimonials, products] = await Promise.all([
+    getUpcoming(10), getGallery({ limit: 12 }), getTestimonials(), getProducts(),
   ]);
 
   const offers = [
@@ -249,7 +248,7 @@ export default async function HomePage() {
             <Link href="/gallery" className="btn btn--ghost btn--sm">View the gallery</Link>
           </div>
           {photos.length ? (
-            <GalleryGrid photos={photos} showFilters={false} />
+            <GalleryGrid photos={photos} showFilters={false} carousel />
           ) : (
             <div className="empty">
               <h3>Photos are coming soon</h3>
@@ -260,26 +259,19 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Full moon invitation */}
+      {/* Full moon invitation and visit, side by side on desktop */}
       <section className="section" style={{ paddingTop: 0 }}>
-        <div className="wrap">
+        <div className="wrap duo">
           <div className="calm-band">
             <h2>Sit with us under the full moon</h2>
-            <p>Every full moon we gather for the Meditation on Twin Hearts, a guided meditation for peace and loving-kindness. It's free, open to everyone, and the simplest way to feel what this work does.</p>
-            <div className="btn-row" style={{ marginTop: 26 }}>
+            <p>Every full moon we gather for the Meditation on Twin Hearts, a guided meditation for peace and loving-kindness. Free and open to everyone.</p>
+            <div className="btn-row">
               <Link href="/schedule#events" className="btn btn--gold">See the next date</Link>
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* Visit */}
-      <section className="section">
-        <div className="wrap">
           <div className="visit">
             <div className="visit-copy">
               <h2>Visit the centre</h2>
-              <p>A quiet room on the fourth floor of Ambrosia Galaxy, a few minutes from Baner Road.</p>
               <address>{site.address.line1}<br />{site.address.line2}</address>
               <div className="btn-row">
                 <a href={site.mapsHref} target="_blank" rel="noopener noreferrer" className="btn btn--gold">Get directions</a>

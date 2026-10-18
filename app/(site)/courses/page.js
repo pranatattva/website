@@ -7,6 +7,7 @@ import { courses, matchCourse } from "@/lib/courses";
 import { getClasses } from "@/lib/data";
 import { formatINR, formatRange } from "@/lib/format";
 import { waLink } from "@/lib/site";
+import { googleLink } from "@/lib/google-link";
 
 export const revalidate = 60;
 export const metadata = {
@@ -65,6 +66,7 @@ export default async function CoursesPage() {
                               <li key={b.id}>
                                 <strong>{formatRange(b.start_date, b.end_date)}</strong>
                                 <span>{[b.time_text, b.mode, formatINR(b.fee)].filter(Boolean).join(", ")}</span>
+                                {googleLink(b) && <a className="meta-link small" href={googleLink(b).href} target="_blank" rel="noopener noreferrer">{googleLink(b).label}</a>}
                               </li>
                             ))}
                           </ul>
