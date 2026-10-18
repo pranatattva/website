@@ -53,7 +53,7 @@ export default function Header({ hasProducts = true }) {
       <header className={`site-header ${scrolled ? "is-scrolled" : ""}`}>
         <div className="wrap header-inner">
           <Link href="/" className="brand" aria-label="Pranatattva home">
-            <LogoMark size={40} />
+            <LogoMark size={44} />
             <span className="brand-name">Pranatattva</span>
           </Link>
 

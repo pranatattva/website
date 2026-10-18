@@ -1,131 +1,66 @@
-// The Pranatattva mark, redrawn as SVG so it can breathe.
-// animated: petals open and close, the disc and centre pulse, the sun ring
-// shimmers and slowly turns, and soft ripples travel outward.
+// The Pranatattva mark, built from the final logo artwork (public/brand).
+// Static: the original PNG. Animated: the same artwork split into layers
+// (rays, disc, petals, centre) so it can move without changing its design.
 
-const PETAL =
-  "M -15 -5 C -26 -2 -42 -1 -50 -8 C -58 -18 -44 -26 -52 -36 C -58 -46 -46 -58 -36 -52 C -26 -44 -18 -58 -8 -50 C -1 -42 -2 -26 -5 -15 C -3 -8 -8 -3 -15 -5 Z";
+const C = 430; // centre of the 860 x 860 artwork
 
-const RAYS = Array.from({ length: 24 }, (_, i) => i * 15);
-
-// A soft, wavy ring for the water ripple (radius 16, gentle waves)
-function wavyRing(r = 16, amp = 1.25, waves = 9, steps = 144) {
+// Water ripple: the centre circle with a very gentle wave
+function softRing(r = 30, amp = 0.32, waves = 6, steps = 120) {
   let d = "";
   for (let i = 0; i <= steps; i++) {
     const t = (i / steps) * Math.PI * 2;
     const rr = r + amp * Math.sin(waves * t);
-    d += `${i ? "L" : "M"}${(rr * Math.cos(t)).toFixed(2)} ${(rr * Math.sin(t)).toFixed(2)}`;
+    d += `${i ? "L" : "M"}${(C + rr * Math.cos(t)).toFixed(2)} ${(C + rr * Math.sin(t)).toFixed(2)}`;
   }
   return d + "Z";
 }
-const WAVE = wavyRing();
-const WAVE_ALT = wavyRing(16, 1.1, 11);
+const RING = softRing();
 
 export default function LogoMark({ size = 48, animated = false, className = "", title = "Pranatattva" }) {
-  const id = animated ? "lm-a" : "lm-s";
+  if (!animated) {
+    return (
+      <img
+        className={`logomark ${className}`}
+        src={size > 100 ? "/brand/logo-mark-512.png" : "/brand/logo-mark-192.png"}
+        width={size}
+        height={size}
+        alt={title}
+        aria-hidden={title ? undefined : true}
+        decoding="async"
+      />
+    );
+  }
+
   return (
-    <svg
-      className={`logomark ${animated ? "is-animated" : ""} ${className}`}
-      width={size}
-      height={size}
-      viewBox="-200 -200 400 400"
-      role="img"
-      aria-label={title}
-    >
+    <svg className={`logomark is-animated ${className}`} width={size} height={size} viewBox="0 0 860 860" role="img" aria-label={title}>
       <defs>
-        <radialGradient id={`${id}-disc`} cx="0" cy="0" r="118" gradientUnits="userSpaceOnUse">
-          <stop offset="0" stopColor="#4766CF" />
-          <stop offset="0.55" stopColor="#4A4FB8" />
-          <stop offset="1" stopColor="#5A2C91" />
+        <radialGradient id="lm-glow-g" cx={C} cy={C} r="400" gradientUnits="userSpaceOnUse">
+          <stop offset="0.7" stopColor="#F4C85C" stopOpacity="0.5" />
+          <stop offset="1" stopColor="#F4C85C" stopOpacity="0" />
         </radialGradient>
-        <linearGradient id={`${id}-petal`} x1="-50" y1="-50" x2="-8" y2="-8" gradientUnits="userSpaceOnUse">
-          <stop offset="0" stopColor="#5872D6" />
-          <stop offset="1" stopColor="#6F8AE6" />
-        </linearGradient>
-        <radialGradient id={`${id}-glow`} cx="0" cy="0" r="160" gradientUnits="userSpaceOnUse">
-          <stop offset="0.6" stopColor="#E8C877" stopOpacity="0.55" />
-          <stop offset="1" stopColor="#E8C877" stopOpacity="0" />
-        </radialGradient>
-        <clipPath id={`${id}-clip`}>
-          <circle r="117" />
+        <clipPath id="lm-clip">
+          <circle cx={C} cy={C} r="296" />
         </clipPath>
       </defs>
 
-      {animated && (
-        <g className="lm-ripples" aria-hidden="true">
-          <circle r="150" className="lm-ripple" style={{ "--d": "0s" }} />
-          <circle r="150" className="lm-ripple" style={{ "--d": "3.5s" }} />
-        </g>
-      )}
+      {/* soft glow and gentle outer ripples */}
+      <circle cx={C} cy={C} r="420" fill="url(#lm-glow-g)" className="lm-glow" />
+      <circle cx={C} cy={C} r="398" className="lm-ripple" style={{ "--d": "0s" }} />
+      <circle cx={C} cy={C} r="398" className="lm-ripple" style={{ "--d": "3.5s" }} />
 
-      {animated && <circle r="170" fill={`url(#${id}-glow)`} className="lm-glow" />}
+      {/* the artwork, layer by layer */}
+      <image href="/brand/logo-rays.webp" x="0" y="0" width="860" height="860" className="lm-rays" />
+      <image href="/brand/logo-disc.webp" x="0" y="0" width="860" height="860" />
 
-      <g className="lm-ring-breathe">
-        <g className="lm-ring-spin">
-          <circle r="150" fill="none" stroke="#D7AE4F" strokeWidth="6" />
-          {RAYS.map((deg, i) => (
-            <line
-              key={deg}
-              x1="0"
-              y1="-132"
-              x2="0"
-              y2="-178"
-              stroke="#D7AE4F"
-              strokeWidth="5"
-              strokeLinecap="round"
-              transform={`rotate(${deg})`}
-              className="lm-ray"
-              style={{ "--i": i }}
-            />
-          ))}
-        </g>
-      </g>
-
-      <g className="lm-disc">
-        <circle r="118" fill={`url(#${id}-disc)`} />
-        <circle r="118" fill="none" stroke="#E2C27A" strokeOpacity="0.55" strokeWidth="1.5" />
-        {animated && (
-          <circle
-            r="100"
-            fill="none"
-            stroke="#FFFFFF"
-            strokeOpacity="0.18"
-            strokeWidth="1.2"
-            strokeDasharray="2 9"
-            className="lm-inner-spin"
-          />
-        )}
-      </g>
-
-      {animated && (
-        <g clipPath={`url(#${id}-clip)`} aria-hidden="true">
-          {[0, 2.2, 4.4].map((d) => (
-            <g key={d}>
-              <path d={WAVE} className="lm-water" style={{ "--d": `${d}s` }} fill="none" stroke="#E2B95A" strokeWidth="2.2" vectorEffect="non-scaling-stroke" />
-              <path d={WAVE_ALT} className="lm-water lm-water--trail" style={{ "--d": `${d + 0.35}s` }} fill="none" stroke="#F1D58F" strokeWidth="1.2" vectorEffect="non-scaling-stroke" />
-            </g>
-          ))}
-        </g>
-      )}
-
-      <g className="lm-flower" transform="scale(0.95)">
-        {[0, 90, 180, 270].map((r) => (
-          <g key={r} transform={`rotate(${r})`}>
-            <g className="lm-petal">
-              <path
-                d={PETAL}
-                fill={`url(#${id}-petal)`}
-                stroke="#E2B95A"
-                strokeWidth="3.2"
-                strokeLinejoin="round"
-              />
-            </g>
-          </g>
+      {/* water ripples travel from the centre circle to the inner gold ring */}
+      <g clipPath="url(#lm-clip)" aria-hidden="true">
+        {[0, 1.6, 3.2].map((d) => (
+          <path key={d} d={RING} className="lm-water" style={{ "--d": `${d}s` }} fill="none" stroke="#F4C85C" strokeWidth="2.6" vectorEffect="non-scaling-stroke" />
         ))}
-        <g>
-          <circle r="16" fill="#6F8AE6" stroke="#E2B95A" strokeWidth="3.2" />
-          <circle r="8" fill="#9CB2F2" stroke="#E2B95A" strokeWidth="2" />
-        </g>
       </g>
+
+      <image href="/brand/logo-petals.webp" x="0" y="0" width="860" height="860" className="lm-petals" />
+      <image href="/brand/logo-center.webp" x="0" y="0" width="860" height="860" />
     </svg>
   );
 }

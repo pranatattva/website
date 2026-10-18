@@ -270,42 +270,31 @@ h4 { font-weight: 500; font-size: 1rem; }
 }
 @keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
 
-/* ---------- Logo animation ---------- */
-.logomark .lm-petal, .logomark .lm-disc, .logomark .lm-ring-breathe, .logomark .lm-ring-spin,
-.logomark .lm-glow, .logomark .lm-ripple, .logomark .lm-inner-spin, .logomark .lm-water { transform-origin: 0px 0px; transform-box: view-box; }
-
+/* ---------- Logo animation (layers of the final artwork) ---------- */
 .logomark.is-animated { animation: lm-intro 1.8s cubic-bezier(.2,.7,.2,1) both; overflow: visible; }
-/* petals stay in place and swell gently, in time with each water ripple */
-.is-animated .lm-petal { animation: lm-swell 6.6s ease-in-out 1s infinite; }
-/* water ripples: the bigger centre circle travels out to the edge of the blue disc and fades */
-.is-animated .lm-water { opacity: 0; animation: lm-water 6.6s cubic-bezier(.25,.6,.35,1) var(--d) infinite; }
-.is-animated .lm-water--trail { animation-name: lm-water-trail; }
-.is-animated .lm-ring-spin { animation: lm-spin 120s linear infinite; }
-.is-animated .lm-inner-spin { animation: lm-spin 60s linear infinite reverse; }
-.is-animated .lm-ray { animation: lm-shimmer 7s ease-in-out infinite; animation-delay: calc(var(--i) * 0.29s); }
+.logomark .lm-petals, .logomark .lm-rays, .logomark .lm-water, .logomark .lm-ripple, .logomark .lm-glow {
+  transform-box: view-box; transform-origin: 430px 430px;
+}
+/* petals stay in place and swell gently: one breath for every four ripples */
+.is-animated .lm-petals { animation: lm-swell 6.4s ease-in-out 1s infinite; }
+/* water ripples: same rhythm as v3 (one every 1.6s), barely wavy */
+.is-animated .lm-water { opacity: 0; animation: lm-water 4.8s cubic-bezier(.22,.61,.36,1) var(--d) infinite; }
+.is-animated .lm-rays { animation: lm-spin 160s linear infinite; }
 .is-animated .lm-glow { animation: lm-glow 8s ease-in-out 1s infinite; }
 /* outer ripples: soft and slow */
-.is-animated .lm-ripple { fill: none; stroke: #e1bd68; stroke-width: 1; opacity: 0; animation: lm-ripple 7s ease-out var(--d) infinite; }
+.is-animated .lm-ripple { fill: none; stroke: #F4C85C; stroke-width: 1.5; opacity: 0; animation: lm-ripple 7s ease-out var(--d) infinite; }
 
-@keyframes lm-intro { from { opacity: 0; transform: scale(.9); } to { opacity: 1; transform: none; } }
-@keyframes lm-swell { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.045); } }
-/* wavy water ripple: grows, gently twists and softens as it travels out */
+@keyframes lm-intro { from { opacity: 0; transform: scale(.92); } to { opacity: 1; transform: none; } }
+@keyframes lm-swell { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.04); } }
 @keyframes lm-water {
   0% { transform: scale(1) rotate(0deg); opacity: 0; }
-  8% { opacity: .95; }
-  35% { transform: scale(3.4) rotate(9deg); }
-  70% { opacity: .35; }
-  100% { transform: scale(7.4) rotate(22deg); opacity: 0; }
-}
-@keyframes lm-water-trail {
-  0% { transform: scale(1) rotate(0deg); opacity: 0; }
-  10% { opacity: .55; }
-  100% { transform: scale(7.2) rotate(-18deg); opacity: 0; }
+  8% { opacity: .9; }
+  70% { opacity: .3; }
+  100% { transform: scale(9.8) rotate(6deg); opacity: 0; }
 }
 @keyframes lm-spin { to { transform: rotate(360deg); } }
-@keyframes lm-shimmer { 0%, 100% { opacity: 1; } 50% { opacity: .6; } }
-@keyframes lm-glow { 0%, 100% { opacity: .3; transform: scale(.97); } 50% { opacity: .7; transform: scale(1.05); } }
-@keyframes lm-ripple { 0% { opacity: .28; transform: scale(1); } 100% { opacity: 0; transform: scale(1.18); } }
+@keyframes lm-glow { 0%, 100% { opacity: .25; transform: scale(.97); } 50% { opacity: .6; transform: scale(1.04); } }
+@keyframes lm-ripple { 0% { opacity: .3; transform: scale(1); } 100% { opacity: 0; transform: scale(1.14); } }
 
 /* ---------- Page hero (inner pages) ---------- */
 .page-hero {
@@ -1391,3 +1380,7 @@ body::after {
 .main-nav > ul { gap: 0; }
 @media (max-width: 1240px) { .main-nav, .header-actions .btn { display: none; } .menu-toggle { display: inline-grid; } }
 .block[role="tabpanel"] { scroll-margin-top: calc(var(--header-h) + 90px); }
+
+/* static logo image */
+img.logomark { display: block; flex: none; object-fit: contain; }
+.brand-name { color: #662d91; }

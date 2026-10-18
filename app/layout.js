@@ -5,8 +5,8 @@ export const metadata = {
   metadataBase: new URL(site.url),
   title: { default: `${site.name} | Pranic Healing Centre in Baner, Pune`, template: `%s | ${site.name}` },
   description: site.description,
-  icons: { icon: "/favicon.svg" },
-  openGraph: { siteName: site.name, type: "website", locale: "en_IN" },
+  icons: { icon: [{ url: "/brand/logo-mark-96.png", type: "image/png" }], apple: "/brand/logo-mark-192.png" },
+  openGraph: { siteName: site.name, type: "website", locale: "en_IN", images: ["/brand/og-image.png"] },
 };
 
 export const viewport = { themeColor: "#faf7f2", width: "device-width", initialScale: 1 };

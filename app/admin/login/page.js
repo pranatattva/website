@@ -1,7 +1,6 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import LogoMark from "@/components/LogoMark";
 import { getBrowserClient } from "@/lib/supabase/browser";
 import config from "@/site.config";
 
@@ -34,8 +33,8 @@ export default function LoginPage() {
     <div className="adm-login">
       <form className="form-card form" onSubmit={submit}>
         <div className="center">
-          <LogoMark size={72} />
-          <h1 style={{ fontSize: "1.8rem", margin: "14px 0 4px" }}>Pranatattva admin</h1>
+          <img src="/brand/pranatattva-logo.png" alt="Pranatattva" width="140" style={{ margin: "0 auto", height: "auto" }} />
+          <h1 style={{ fontSize: "1.6rem", margin: "14px 0 4px" }}>Admin dashboard</h1>
           <p className="muted small">Manage classes, events, the gallery, the shop and the blog.</p>
         </div>
         <div className="field">
