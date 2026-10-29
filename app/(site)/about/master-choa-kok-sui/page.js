@@ -21,6 +21,14 @@ export default function MCKSPage() {
         subnav={aboutNav}
         active="/about/master-choa-kok-sui"
       />
+
+      {/* Facts and figures */}
+      <section className="section" style={{ paddingBottom: 0 }}>
+        <div className="wrap">
+          <StatBand stats={mcks.allStats} label="Grand Master Choa Kok Sui in numbers" />
+        </div>
+      </section>
+
       <section className="section">
         <Decor preset="a" />
         <div className="wrap lineage">
@@ -28,8 +36,7 @@ export default function MCKSPage() {
             <Portrait initials="MCKS" src={mcks.photo} alt="Grand Master Choa Kok Sui" />
           </aside>
           <div>
-            <StatBand stats={mcks.stats} />
-            <div className="tribute">
+            <div className="tribute" style={{ marginTop: 0 }}>
               {mcks.tribute.map((p, i) => <p key={i}>{p}</p>)}
             </div>
             <div className="prose" style={{ marginTop: 40 }}>

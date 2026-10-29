@@ -1,7 +1,15 @@
-// Drawn placeholders used until real photos are uploaded.
+import { photos } from "@/lib/photos";
 
+// Portraits use the real photos in public/images; drawn placeholders remain as a fallback.
 export function Portrait({ initials, src, alt }) {
-  if (src) return <div className="portrait"><img src={src} alt={alt} /></div>;
+  const photo = src || photos[initials];
+  if (photo) {
+    return (
+      <div className="portrait">
+        <img src={photo} alt={alt || ""} loading="lazy" decoding="async" />
+      </div>
+    );
+  }
   return (
     <div className="portrait" aria-hidden="true">
       <svg viewBox="0 0 200 200">

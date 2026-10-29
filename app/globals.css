@@ -1384,3 +1384,14 @@ body::after {
 /* static logo image */
 img.logomark { display: block; flex: none; object-fit: contain; }
 .brand-name { color: #662d91; }
+
+/* =========================================================
+   v6
+   ========================================================= */
+/* Desktop: tab and pill bars scroll away with the page instead of staying on screen */
+@media (min-width: 901px) {
+  .capsule-bar,
+  .shop-flow > .capsule-bar { position: static; }
+}
+/* Real portrait photos */
+.portrait img { object-position: center 30%; }

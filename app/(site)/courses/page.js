@@ -3,9 +3,9 @@ import PageHero from "@/components/PageHero";
 import Decor from "@/components/Decor";
 import JumpCapsules from "@/components/JumpCapsules";
 import { Medal, Tick, IcBook, IcCalendar, WhatsApp } from "@/components/Icons";
-import { courses, matchCourse } from "@/lib/courses";
+import { BATCH_WINDOW_DAYS, courses, matchCourse } from "@/lib/courses";
 import { getClasses } from "@/lib/data";
-import { formatINR, formatRange } from "@/lib/format";
+import { formatINR, formatRange, todayISO } from "@/lib/format";
 import { waLink } from "@/lib/site";
 import { googleLink } from "@/lib/google-link";
 
@@ -15,9 +15,17 @@ export const metadata = {
   description: "Basic and Advanced Pranic Healing, Pranic Psychotherapy, Achieving Oneness with the Higher Soul and Arhatic Yoga at Pranatattva, Baner, Pune.",
 };
 
+function addDays(iso, days) {
+  const d = new Date(`${iso}T00:00:00Z`);
+  d.setUTCDate(d.getUTCDate() + days);
+  return d.toISOString().slice(0, 10);
+}
+
 export default async function CoursesPage() {
   const batches = await getClasses();
-  const batchesFor = (c) => batches.filter((b) => matchCourse(b.title)?.slug === c.slug);
+  // Only show batches that start within the next BATCH_WINDOW_DAYS days
+  const until = addDays(todayISO(), BATCH_WINDOW_DAYS);
+  const batchesFor = (c) => batches.filter((b) => matchCourse(b.title)?.slug === c.slug && b.start_date <= until);
 
   return (
     <>
@@ -33,7 +41,6 @@ export default async function CoursesPage() {
         <section className="section" style={{ paddingTop: 24 }}>
           <Decor preset="a" />
           <div className="wrap">
-
             {courses.map((c) => {
               const upcoming = batchesFor(c);
               return (
@@ -62,16 +69,19 @@ export default async function CoursesPage() {
                         <h4><IcCalendar />Upcoming batches</h4>
                         {upcoming.length ? (
                           <ul>
-                            {upcoming.map((b) => (
-                              <li key={b.id}>
-                                <strong>{formatRange(b.start_date, b.end_date)}</strong>
-                                <span>{[b.time_text, b.mode, formatINR(b.fee)].filter(Boolean).join(", ")}</span>
-                                {googleLink(b) && <a className="meta-link small" href={googleLink(b).href} target="_blank" rel="noopener noreferrer">{googleLink(b).label}</a>}
-                              </li>
-                            ))}
+                            {upcoming.map((b) => {
+                              const g = googleLink(b);
+                              return (
+                                <li key={b.id}>
+                                  <strong>{formatRange(b.start_date, b.end_date)}</strong>
+                                  <span>{[b.time_text, b.mode, formatINR(b.fee)].filter(Boolean).join(", ")}</span>
+                                  {g && <a className="meta-link small" href={g.href} target="_blank" rel="noopener noreferrer">{g.label}</a>}
+                                </li>
+                              );
+                            })}
                           </ul>
                         ) : (
-                          <p className="muted small">No batch scheduled yet. Message us to join the waiting list.</p>
+                          <p className="muted small">Message us to join the waiting list</p>
                         )}
                       </div>
                       <a className="btn btn--wa btn--block" href={waLink(`Hi Pranatattva, I'd like to reserve a seat for the ${c.name} course.`)} target="_blank" rel="noopener noreferrer">

@@ -3,16 +3,25 @@ import { Portrait } from "@/components/Art";
 import { Tick } from "@/components/Icons";
 import StatBand from "@/components/StatBand";
 
+// Figures left out of each healer's stats section (matched by label)
+const HIDE_STATS = {
+  "pragati-pullewar": ["Healing Camps"],
+  "santosh-pullewar": ["Years of Healing"],
+};
+
 // A healer's story. full = whole bio (profile page); otherwise the first two paragraphs.
 export default function HealerFeature({ healer, flip = false, full = false, headingLevel = 2, hideName = false }) {
   const H = `h${headingLevel}`;
   const Sub = `h${Math.min(headingLevel + 1, 6)}`;
   const paragraphs = full ? healer.bio : healer.bio.slice(0, 2);
+  const hidden = (HIDE_STATS[healer.slug] || []).map((l) => l.toLowerCase());
+  const stats = healer.allStats.filter((s) => !hidden.includes(s.label.toLowerCase()));
+
   return (
     <article className={`healer-feature ${flip ? "healer-feature--flip" : ""}`} id={healer.slug}>
       <aside className="hf-side">
         <Portrait initials={healer.initials} src={healer.photo} alt={healer.name} />
-        <Link href="/shop#healings" className="btn btn--sm">Book a session with {healer.firstName}</Link>
+        <Link href="/shop#healings" className="btn btn--sm">Book a session</Link>
       </aside>
       <div className="hf-main">
         {!hideName && (
@@ -23,7 +32,7 @@ export default function HealerFeature({ healer, flip = false, full = false, head
           </>
         )}
         <div className="stat-band-compact">
-          <StatBand stats={healer.allStats} label={`${healer.name} in numbers`} />
+          <StatBand stats={stats} label={`${healer.name} in numbers`} />
         </div>
         <div className="prose" style={{ marginTop: 32 }}>
           {paragraphs.map((p, i) => <p key={i} className={i === 0 ? "lede" : undefined}>{p}</p>)}
