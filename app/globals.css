@@ -1395,3 +1395,20 @@ img.logomark { display: block; flex: none; object-fit: contain; }
 }
 /* Real portrait photos */
 .portrait img { object-position: center 30%; }
+
+/* =========================================================
+   v7: 4:5 portraits beside the bios
+   ========================================================= */
+.hf-side .portrait,
+.lineage-side .portrait {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  border-radius: 28px;
+}
+.hf-side .portrait img,
+.lineage-side .portrait img { object-position: center top; }
+/* round photos on the home page keep the face centred */
+.healer-card .portrait img { object-position: center 18%; }
+@media (max-width: 900px) {
+  .hf-side .portrait, .lineage-side .portrait { border-radius: 20px; }
+}
