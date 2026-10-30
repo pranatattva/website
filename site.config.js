@@ -10,10 +10,10 @@ const config = {
   email: "info@pranatattva.com",
 
   // Number for calls. Type it the way you want it to appear.
-  callNumber: "+91 XXXXX XXXXX",
+  callNumber: "+91 91852 35738",
 
   // WhatsApp number (can be the same as callNumber). Include +91.
-  whatsappNumber: "+91 XXXXX XXXXX",
+  whatsappNumber: "+91 91852 35738",
 
   // Message that appears ready-typed when someone taps "WhatsApp"
   whatsappMessage: "Hi Pranatattva, I'd like to know more about a healing session.",
